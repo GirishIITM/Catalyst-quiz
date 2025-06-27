@@ -1,7 +1,7 @@
 "use client"
 
-import type * as React from "react"
 import { AudioWaveform, Bell, BookOpen, Command, FlaskConical, GalleryVerticalEnd, Plus, Upload } from "lucide-react"
+import type * as React from "react"
 
 import { NavMain } from "@/components/nav-main"
 import { NavQuickActions } from "@/components/nav-quick-actions"
@@ -9,29 +9,8 @@ import { NavStats } from "@/components/nav-stats"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar"
+import { routes } from "@/types/routes"
 
-// Routes configuration
-export const routes = {
-  home: "/",
-  login: "/login",
-  signup: "/signup",
-  register: "/register",
-  teacher: {
-    dashboard: "/:classroom/teacher/dashboard",
-    createQuiz: "/:classroom/teacher/create-quiz",
-    uploadNotes: "/:classroom/teacher/upload-notes",
-    myQuizzes: "/:classroom/teacher/my-quizzes",
-    classroom: "/:classroom/teacher/classroom",
-    evaluation: "/:classroom/teacher/evaluation",
-    profile: "/:classroom/teacher/profile",
-    feedback: "/:classroom/teacher/feedback",
-    submissions: "/:classroom/teacher/submissions",
-  },
-  quizes: "/:classroom/quizes",
-  quiz: "/:classroom/:quiz",
-}
-
-// This is sample data.
 const data = {
   user: {
     name: "John Teacher",

@@ -1,4 +1,6 @@
+import { AppSidebar } from "@/components/app-sidebar";
 import NotFound from "@/components/not-found";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
@@ -6,6 +8,24 @@ import StudentDashboard from "@/pages/StudentDashboard";
 import TeacherDashboard from "@/pages/TeacherDashboard";
 import { routes } from "@/types/routes";
 import { Route, Routes } from "react-router-dom";
+
+function wrapTeacherSidebar(element: React.ReactNode) {
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      {element}
+    </SidebarProvider>
+  );
+}
+
+function wrapStudentSidebar(element: React.ReactNode) {
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      {element}
+    </SidebarProvider>
+  );
+}
 
 export default function AllRoutes() {
   return (
@@ -24,19 +44,21 @@ export default function AllRoutes() {
       <Route path={routes.student.feedback} element={<div>Feedback</div>} />
       <Route path={routes.student.profile} element={<div>Profile</div>} />
 
-      <Route path={routes.teacher.dashboard} element={<TeacherDashboard />} />
+      <Route path={routes.teacher.dashboard} element={wrapTeacherSidebar(<TeacherDashboard />)} />
       <Route
         path={routes.teacher.createQuiz}
-        element={<div>Create Quiz</div>}
+        element={wrapTeacherSidebar(<div>Create Quiz</div>)}
       />
       <Route
         path={routes.teacher.uploadNotes}
-        element={<div>Upload Notes</div>}
+        element={wrapTeacherSidebar(<div>Upload Notes</div>)}
       />
-      <Route path={routes.teacher.myQuizzes} element={<div>My Quizzes</div>} />
-      <Route path={routes.teacher.classroom} element={<div>Classroom</div>} />
-      <Route path={routes.teacher.evaluation} element={<div>Evaluation</div>} />
+      <Route path={routes.teacher.myQuizzes} element={wrapTeacherSidebar(<div>My Quizzes</div>)} />
+      <Route path={routes.teacher.classroom} element={wrapTeacherSidebar(<div>Classroom</div>)} />
+      <Route path={routes.teacher.evaluation} element={wrapTeacherSidebar(<div>Evaluation</div>)} />
       <Route path={routes.student.profile} element={<div>profile</div>} />
+      <Route path={routes.teacher.feedback} element={wrapTeacherSidebar(<div>Feedback</div>)} />
+      <Route path={routes.teacher.submissions} element={wrapTeacherSidebar(<div>Submissions</div>)} />
 
       <Route path={routes.login} element={<Login />} />
       <Route path={routes.register} element={<Register />} />
