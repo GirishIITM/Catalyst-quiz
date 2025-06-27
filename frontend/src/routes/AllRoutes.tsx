@@ -18,14 +18,14 @@ function wrapTeacherSidebar(element: React.ReactNode) {
   );
 }
 
-function wrapStudentSidebar(element: React.ReactNode) {
-  return (
-    <SidebarProvider>
-      <AppSidebar />
-      {element}
-    </SidebarProvider>
-  );
-}
+// function wrapStudentSidebar(element: React.ReactNode) {
+//   return (
+//     <SidebarProvider>
+//       <AppSidebar />
+//       {element}
+//     </SidebarProvider>
+//   );
+// }
 
 export default function AllRoutes() {
   return (
