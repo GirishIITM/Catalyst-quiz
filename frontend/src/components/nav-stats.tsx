@@ -20,6 +20,7 @@ export function NavStats({
     icon: LucideIcon
   }[]
 }) {
+  const url = window.location.pathname;
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Notifications</SidebarGroupLabel>
@@ -27,7 +28,7 @@ export function NavStats({
         {stats.map((stat) => (
           <SidebarMenuItem key={stat.title}>
             <SidebarMenuButton asChild>
-              <Link to={stat.url}>
+              <Link to={stat.url} className={url === stat.url ? "bg-red" : ""}>
                 <stat.icon />
                 <span>{stat.title}</span>
               </Link>

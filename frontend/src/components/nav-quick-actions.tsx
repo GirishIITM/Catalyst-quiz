@@ -20,6 +20,7 @@ export function NavQuickActions({
     icon: LucideIcon
   }[]
 }) {
+  const url = window.location.pathname;
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Quick Actions</SidebarGroupLabel>
@@ -27,7 +28,7 @@ export function NavQuickActions({
         {actions.map((action) => (
           <SidebarMenuItem key={action.title}>
             <SidebarMenuButton asChild>
-              <Link to={action.url}>
+              <Link to={action.url} className={url === action.url ? "bg-red" : ""}>
                 <action.icon />
                 <span>{action.title}</span>
               </Link>
