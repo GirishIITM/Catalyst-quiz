@@ -8,6 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { Link } from "react-router-dom"
 
 export function NavStats({
   stats,
@@ -26,10 +27,10 @@ export function NavStats({
         {stats.map((stat) => (
           <SidebarMenuItem key={stat.title}>
             <SidebarMenuButton asChild>
-              <a href={stat.url}>
+              <Link to={stat.url}>
                 <stat.icon />
                 <span>{stat.title}</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
             <SidebarMenuBadge>{stat.count}</SidebarMenuBadge>
           </SidebarMenuItem>

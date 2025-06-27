@@ -9,6 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { Link } from "react-router-dom"
 
 export function NavQuickActions({
   actions,
@@ -26,10 +27,10 @@ export function NavQuickActions({
         {actions.map((action) => (
           <SidebarMenuItem key={action.title}>
             <SidebarMenuButton asChild>
-              <a href={action.url}>
+              <Link to={action.url}>
                 <action.icon />
                 <span>{action.title}</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}

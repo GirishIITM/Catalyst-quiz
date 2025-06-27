@@ -1,13 +1,11 @@
-import NotFound from '@/components/not-found';
-import { StudentSidebar } from '@/components/sidbars/StudentSidebar';
-import { TeacherSidebar } from '@/components/sidbars/TeacherSidebar';
-import Home from '@/pages/Home';
-import Login from '@/pages/Login';
-import Register from '@/pages/Register';
-import StudentDashboard from '@/pages/StudentDashboard';
-import TeacherDashboard from '@/pages/TeacherDashboard';
-import { routes } from '@/types/routes';
-import { Route, Routes } from 'react-router-dom';
+import NotFound from "@/components/not-found";
+import Home from "@/pages/Home";
+import Login from "@/pages/Login";
+import Register from "@/pages/Register";
+import StudentDashboard from "@/pages/StudentDashboard";
+import TeacherDashboard from "@/pages/TeacherDashboard";
+import { routes } from "@/types/routes";
+import { Route, Routes } from "react-router-dom";
 
 export default function AllRoutes() {
   return (
@@ -16,75 +14,33 @@ export default function AllRoutes() {
       <Route path={routes.quizes} element={<div>Quizzes</div>} />
       <Route path={routes.quiz + "/id:"} element={<div>Quiz</div>} />
 
-      <Route path={routes.student.dashboard} element={
-        <StudentSidebar>
-          <StudentDashboard />
-        </StudentSidebar>
-      } />
-      <Route path={routes.student.viewNotes} element={
-        <StudentSidebar>
-          <div>View Notes</div>
-        </StudentSidebar>
-      } />
-      <Route path={routes.student.takeQuiz} element={
-        <StudentSidebar>
-          <div>Take Quiz</div>
-        </StudentSidebar>
-      } />
-      <Route path={routes.student.submissions} element={
-        <StudentSidebar>
-          <div>Submissions</div>
-        </StudentSidebar>
-      } />
-      <Route path={routes.student.feedback} element={
-        <StudentSidebar>
-          <div>Feedback</div>
-        </StudentSidebar>
-      } />
-      <Route path={routes.student.profile} element={
-        <StudentSidebar>
-          <div>Profile</div>
-        </StudentSidebar>
-      } />
+      <Route path={routes.student.dashboard} element={<StudentDashboard />} />
+      <Route path={routes.student.viewNotes} element={<div>View Notes</div>} />
+      <Route path={routes.student.takeQuiz} element={<div>Take Quiz</div>} />
+      <Route
+        path={routes.student.submissions}
+        element={<div>Submissions</div>}
+      />
+      <Route path={routes.student.feedback} element={<div>Feedback</div>} />
+      <Route path={routes.student.profile} element={<div>Profile</div>} />
 
-      <Route path={routes.teacher.dashboard} element={
-        <TeacherSidebar>
-          <TeacherDashboard />
-        </TeacherSidebar>} />
-      <Route path={routes.teacher.createQuiz} element={
-        <TeacherSidebar>
-          <div>Create Quiz</div>
-        </TeacherSidebar>
-      } />
-      <Route path={routes.teacher.uploadNotes} element={
-        <TeacherSidebar>
-          <div>Upload Notes</div>
-        </TeacherSidebar>
-      } />
-      <Route path={routes.teacher.myQuizzes} element={
-        <TeacherSidebar>
-          <div>My Quizzes</div>
-        </TeacherSidebar>
-      } />
-      <Route path={routes.teacher.classroom} element={
-        <TeacherSidebar>
-          <div>Classroom</div>
-        </TeacherSidebar>
-      } />
-      <Route path={routes.teacher.evaluation} element={
-        <TeacherSidebar>
-          <div>Evaluation</div>
-        </TeacherSidebar>
-      } />
-      <Route path={routes.student.profile} element={
-        <StudentSidebar>
-          <div>profile</div>
-        </StudentSidebar>
-      } />
+      <Route path={routes.teacher.dashboard} element={<TeacherDashboard />} />
+      <Route
+        path={routes.teacher.createQuiz}
+        element={<div>Create Quiz</div>}
+      />
+      <Route
+        path={routes.teacher.uploadNotes}
+        element={<div>Upload Notes</div>}
+      />
+      <Route path={routes.teacher.myQuizzes} element={<div>My Quizzes</div>} />
+      <Route path={routes.teacher.classroom} element={<div>Classroom</div>} />
+      <Route path={routes.teacher.evaluation} element={<div>Evaluation</div>} />
+      <Route path={routes.student.profile} element={<div>profile</div>} />
 
       <Route path={routes.login} element={<Login />} />
       <Route path={routes.register} element={<Register />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
-  )
+  );
 }
