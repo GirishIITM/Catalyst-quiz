@@ -1,7 +1,7 @@
-import "../../styles/Home.css";
+import "../styles/home.css";
 
 export default function Home() {
   return (
-    <div className="home">Home</div>
+    <div className="home"></div>
   )
 }
