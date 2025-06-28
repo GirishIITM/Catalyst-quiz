@@ -15,7 +15,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export function NavMain({
   items,
@@ -28,10 +28,10 @@ export function NavMain({
     items?: {
       title: string;
       url: string;
+      isActive?: boolean;
     }[];
   }[];
 }) {
-  const url = window.location.pathname;
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Navigation</SidebarGroupLabel>
@@ -54,13 +54,11 @@ export function NavMain({
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem
-                      key={subItem.title}
-                    >
-                      <SidebarMenuSubButton asChild>
-                        <Link to={subItem.url} className={url === subItem.url ? "bg-var(--sidebar-active-link-bg)" : ""}>
+                    <SidebarMenuSubItem key={subItem.title}>
+                      <SidebarMenuSubButton asChild isActive={window.location.pathname === subItem.url}>
+                        <NavLink to={subItem.url} >
                           <span>{subItem.title}</span>
-                        </Link>
+                        </NavLink>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

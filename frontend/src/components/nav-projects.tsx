@@ -22,7 +22,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export function NavProjects({
   projects,
@@ -31,24 +31,21 @@ export function NavProjects({
     name: string;
     url: string;
     icon: LucideIcon;
+    isActive?: boolean;
   }[];
 }) {
   const { isMobile } = useSidebar();
-  const url = window.location.pathname;
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Projects</SidebarGroupLabel>
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
-              <Link
-                to={item.url}
-                className={url === item.url ? "bg-red" : ""}
-              >
+            <SidebarMenuButton asChild isActive={item.isActive}>
+              <NavLink to={item.url} >
                 <item.icon />
                 <span>{item.name}</span>
-              </Link>
+              </NavLink>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

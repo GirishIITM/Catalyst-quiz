@@ -1,8 +1,6 @@
-"use client"
+import { Bell, ChevronsUpDown, LogOut, Moon, Sun, User } from "lucide-react";
 
-import { Bell, ChevronsUpDown, LogOut, Moon, Sun, User } from "lucide-react"
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,19 +9,28 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
+} from "@/components/ui/dropdown-menu";
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/components/ui/sidebar";
+import { authStore } from "@/states/auth";
+import { routes } from "@/types/routes";
+import { useNavigate } from "react-router-dom";
 
 export function NavUser({
   user,
 }: {
   user: {
-    name: string
-    email: string
-    avatar: string
-  }
+    name: string;
+    email: string;
+    avatar: string;
+  };
 }) {
-  const { isMobile } = useSidebar()
+  const { isMobile } = useSidebar();
+  const navigate = useNavigate();
 
   return (
     <SidebarMenu>
@@ -35,7 +42,10 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} />
+                <AvatarImage
+                  src={user.avatar || "/placeholder.svg"}
+                  alt={user.name}
+                />
                 <AvatarFallback className="rounded-lg">
                   {user.name
                     .split(" ")
@@ -59,7 +69,10 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} />
+                  <AvatarImage
+                    src={user.avatar || "/placeholder.svg"}
+                    alt={user.name}
+                  />
                   <AvatarFallback className="rounded-lg">
                     {user.name
                       .split(" ")
@@ -86,14 +99,23 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => document.documentElement.classList.toggle("dark")}>
+              <DropdownMenuItem
+                onClick={() =>
+                  document.documentElement.classList.toggle("dark")
+                }
+              >
                 <Sun className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                 <Moon className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                 Toggle Theme
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                authStore.getState().logout();
+                navigate(routes.login);
+              }}
+            >
               <LogOut />
               Log out
             </DropdownMenuItem>
@@ -101,5 +123,5 @@ export function NavUser({
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }

@@ -27,8 +27,8 @@ export function NavStats({
       <SidebarMenu>
         {stats.map((stat) => (
           <SidebarMenuItem key={stat.title}>
-            <SidebarMenuButton asChild>
-              <Link to={stat.url} className={url === stat.url ? "bg-red" : ""}>
+            <SidebarMenuButton asChild isActive={url === stat.url}>
+              <Link to={stat.url} >
                 <stat.icon />
                 <span>{stat.title}</span>
               </Link>

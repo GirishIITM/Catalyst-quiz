@@ -74,7 +74,7 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --sidebar-active-link-bg: oklch(62.793% 0.25768 29.223);
+  --sidebar-active-link-bg: oklch(80.877% 0.17029 75.348 / 0.336);
 }
 
 .dark {
@@ -109,8 +109,7 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-  --sidebar-active-link-bg: oklch(0.488 0.243 264.376 / 15%);
-
+  --sidebar-active-link-bg: oklch(48.417% 0.10107 77.506 / 0.466);
 }
 
 @layer base {

@@ -4,7 +4,15 @@ export interface AuthState {
   isAuthenticated: boolean;
   user: user
   token: string | null;
+  classroomId?: string;
   setUser: (user: user) => void;
   logout: () => void;
   setToken: (token: string | null) => void;
+  setClassroomId: (classroomId: string) => void;
+}
+
+export type initStoreProps = {
+  user: user | null;
+  token: string | null;
+  classroomId: string;
 }

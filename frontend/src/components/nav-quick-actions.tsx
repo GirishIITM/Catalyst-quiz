@@ -1,5 +1,3 @@
-"use client"
-
 import type { LucideIcon } from "lucide-react"
 
 import {
@@ -9,7 +7,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 export function NavQuickActions({
   actions,
@@ -18,20 +16,20 @@ export function NavQuickActions({
     title: string
     url: string
     icon: LucideIcon
+    isActive?: boolean
   }[]
 }) {
-  const url = window.location.pathname;
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Quick Actions</SidebarGroupLabel>
       <SidebarMenu>
         {actions.map((action) => (
           <SidebarMenuItem key={action.title}>
-            <SidebarMenuButton asChild>
-              <Link to={action.url} className={url === action.url ? "bg-red" : ""}>
+            <SidebarMenuButton asChild isActive={window.location.pathname === action.url}>
+              <NavLink to={action.url} >
                 <action.icon />
                 <span>{action.title}</span>
-              </Link>
+              </NavLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}
