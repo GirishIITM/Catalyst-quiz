@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     const { classroomId, user } = initializeAuthStore();
     if (user) {
-      const route = generateRoute(routes[user.role].dashboard, { classroomId });
+      const route = generateRoute(routes[user.role].dashboard, { classroom:classroomId });
       navigate(route);
     }
   }, []);

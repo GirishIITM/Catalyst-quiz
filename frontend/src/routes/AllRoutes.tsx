@@ -1,6 +1,7 @@
-import { AppSidebar } from "@/components/app-sidebar";
 import NotFound from "@/components/not-found";
 import PrivateRoute from "@/components/private-route";
+import { StudentSidebar } from "@/components/student-sidebar";
+import { TeacherSidebar } from "@/components/teacher-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
@@ -13,20 +14,20 @@ import { Route, Routes } from "react-router-dom";
 function wrapTeacherSidebar(element: React.ReactNode) {
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <TeacherSidebar />
       <PrivateRoute>{element}</PrivateRoute>
     </SidebarProvider>
   );
 }
 
-// function wrapStudentSidebar(element: React.ReactNode) {
-//   return (
-//     <SidebarProvider>
-//       <AppSidebar />
-//       {element}
-//     </SidebarProvider>
-//   );
-// }
+function wrapStudentSidebar(element: React.ReactNode) {
+  return (
+    <SidebarProvider>
+      <StudentSidebar />
+      <PrivateRoute>{element}</PrivateRoute>
+    </SidebarProvider>
+  );
+}
 
 export default function AllRoutes() {
   return (
@@ -35,15 +36,30 @@ export default function AllRoutes() {
       <Route path={routes.quizes} element={<div>Quizzes</div>} />
       <Route path={routes.quiz + "/id:"} element={<div>Quiz</div>} />
 
-      <Route path={routes.student.dashboard} element={<StudentDashboard />} />
-      <Route path={routes.student.viewNotes} element={<div>View Notes</div>} />
-      <Route path={routes.student.takeQuiz} element={<div>Take Quiz</div>} />
+      <Route
+        path={routes.student.dashboard}
+        element={wrapStudentSidebar(<StudentDashboard />)}
+      />
+      <Route
+        path={routes.student.viewNotes}
+        element={wrapStudentSidebar(<div>View Notes</div>)}
+      />
+      <Route
+        path={routes.student.takeQuiz}
+        element={wrapStudentSidebar(<div>Take Quiz</div>)}
+      />
       <Route
         path={routes.student.submissions}
-        element={<div>Submissions</div>}
+        element={wrapStudentSidebar(<div>Submissions</div>)}
       />
-      <Route path={routes.student.feedback} element={<div>Feedback</div>} />
-      <Route path={routes.student.profile} element={<div>Profile</div>} />
+      <Route
+        path={routes.student.feedback}
+        element={wrapStudentSidebar(<div>Feedback</div>)}
+      />
+      <Route
+        path={routes.student.profile}
+        element={wrapStudentSidebar(<div>Profile</div>)}
+      />
 
       <Route
         path={routes.teacher.dashboard}
@@ -69,7 +85,6 @@ export default function AllRoutes() {
         path={routes.teacher.evaluation}
         element={wrapTeacherSidebar(<div>Evaluation</div>)}
       />
-      <Route path={routes.student.profile} element={<div>profile</div>} />
       <Route
         path={routes.teacher.feedback}
         element={wrapTeacherSidebar(<div>Feedback</div>)}

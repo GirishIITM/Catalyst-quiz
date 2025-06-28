@@ -1,69 +1,88 @@
-# React + TypeScript + Vite
+# Catalyst Quiz
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Learn Smarter, Not Harder.**
 
-Currently, two official plugins are available:
+Catalyst Quiz is an intelligent learning platform designed to bridge the gap between traditional teaching methods and modern technology. It provides a seamless environment where teachers can upload notes and create quizzes, and students can submit answers in various formats, including typed text and handwritten responses via image uploads.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The core of Catalyst Quiz is its advanced AI-powered grading system. Unlike traditional systems that rely on simple keyword matching, our platform uses a sophisticated two-step process to evaluate student answers:
 
-## Expanding the ESLint configuration
+1.  **Fast Semantic Matching**: The system first performs a quick semantic check to determine if an answer is relevant to the question. Irrelevant or nonsensical responses are filtered out efficiently.
+2.  **Deep LLM Analysis**: For relevant answers, a Large Language Model (LLM) conducts a deep analysis to understand the student's reasoning, conceptual understanding, and the steps they took to arrive at the answer.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+This approach allows for a more nuanced and fair evaluation, akin to a more intelligent and optimized version of Gradescope. It's a smart grading system that understands context, not just text.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Pages and UI Layout
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### 1. Landing Page (Home)
+- Hero section: logo, tagline “Learn Smarter, Not Harder”
+- Login / Register buttons
+- Overview of key features: AI Grading, Handwriting Recognition, Smart Feedback
+- Footer: About | Contact | Terms
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 2. Authentication Pages
+#### Register (`Register.tsx`)
+- Email & password fields
+- Role selection: Teacher / Student
+- Onboarding flow to create or join a classroom.
+#### Login (`Login.tsx`)
+- Email & password fields
+- Role-based redirection to the appropriate dashboard (Teacher or Student).
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 3. Teacher Dashboard (`TeacherDashboard.tsx`)
+- A centralized hub for each classroom, displaying key statistics and activities.
+- Sidebar links: Dashboard | Create Quiz | Upload Notes | My Quizzes | Classroom | Logout
+- Main panel:
+  - Recent uploads & activities
+  - “Create New Quiz” button
+  - “Upload Lecture Notes” button
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 4. Create Quiz Page (`CreateQuiz.tsx`)
+- Form fields:
+  - Quiz Title & Description
+  - Add Questions: text, answer key, tags, difficulty
+  - Save / Publish buttons
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 5. Upload Notes Page (`UploadNotes.tsx`)
+- File upload (PDF / DOC)
+- Title, tags & description fields
+- Submit button
+
+### 6. Student Dashboard (`StudentDashboard.tsx`)
+- Sidebar links: Dashboard | View Notes | Take Quiz | My Submissions | Logout
+- Main panel:
+  - Recently viewed notes
+  - Assigned quizzes
+
+### 7. View Notes Page (`ViewNotes.tsx`)
+- Search / filter by tags & subjects
+- Note cards with title & preview
+- Full view via modal or redirect
+
+### 8. Take Quiz Page (`TakeQuiz.tsx`)
+- List of available quizzes
+- Quiz interface:
+  - Question display
+  - Answer input (text or image upload)
+  - Submit button
+
+### 9. My Submissions Page (`Submissions.tsx`)
+- List of past quizzes
+- Status indicator: Evaluated / Pending
+- “View Feedback” button
+
+### 10. AI Evaluation
+- Semantic answer matching (beyond keyword checks)
+- Automated grading with LLM reasoning
+- Plagiarism detection
+- Optional: feedback request & re-evaluation flow
+
+### 11. Classroom Overview
+- Teacher view: class roster, statistics, activity feed
+
+## Tech Stack
+- Backend: Flask, PostgreSQL / SQLite, SQLAlchemy ORM  
+- Frontend: React + Vite, TypeScript  
+- UI Library: ShadUI  
+- AI Evaluation: Gemini / DeepSeek LLM models  
+
+A one-stop platform where teachers upload notes & quizzes and students access/submit (typed or handwritten) answers. The system uses AI to understand and grade responses semantically rather than by exact text match—making grading smarter and more flexible.
