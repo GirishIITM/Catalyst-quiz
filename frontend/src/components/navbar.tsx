@@ -34,9 +34,9 @@ export function Header() {
           </div>
 
           <nav className="hidden md:flex space-x-8">
-            <a href="#" className="text-white hover:text-primary transition-colors">Home</a>
-            <a href="#features" className="text-white hover:text-primary transition-colors">Features</a>
-            <a href="#contact" className="text-white hover:text-primary transition-colors">Contact</a>
+            <a href="/#" className="text-white hover:text-primary transition-colors">Home</a>
+            <a href="/#features" className="text-white hover:text-primary transition-colors">Features</a>
+            <a href="/#contact" className="text-white hover:text-primary transition-colors">Contact</a>
           </nav>
 
           <div className="hidden md:flex gap-2 items-center">

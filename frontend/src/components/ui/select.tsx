@@ -1,4 +1,4 @@
-import * as React from "react"
+import { cn } from "@/lib/utils"
 import {
   Select as RadixSelect,
   SelectContent as RadixSelectContent,
@@ -8,10 +8,9 @@ import {
   SelectTrigger as RadixSelectTrigger,
   SelectValue as RadixSelectValue,
   SelectViewport as RadixSelectViewport,
-} 
-from "@radix-ui/react-select"
-import { cn } from "@/lib/utils"
+} from "@radix-ui/react-select"
 import { Check, ChevronDown } from "lucide-react"
+import * as React from "react"
 
 const Select = RadixSelect
 const SelectGroup = RadixSelectGroup
@@ -85,11 +84,5 @@ const SelectItem = React.forwardRef<
 SelectItem.displayName = RadixSelectItem.displayName
 
 export {
-  Select,
-  SelectGroup,
-  SelectValue,
-  SelectTrigger,
-  SelectContent,
-  SelectLabel,
-  SelectItem,
+  Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue
 }
