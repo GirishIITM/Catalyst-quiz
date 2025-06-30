@@ -55,7 +55,7 @@ export function Header() {
           </button>
         </div>
 
-        <div className={`md:hidden absolute top-full right-0 w-64 bg-black dark:bg-gray-900 p-8 shadow-lg flex flex-col gap-6 transition-transform duration-300 z-[999] ${
+        <div className={`md:hidden absolute top-full right-0 w-full bg-black dark:bg-gray-900 p-8 shadow-lg flex flex-col gap-6 transition-transform duration-300 z-[999] ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}>
           <button 
@@ -65,13 +65,13 @@ export function Header() {
             &times;
           </button>
           
-          <nav className="flex flex-col gap-4">
+          <nav className="flex flex-col gap-4 items-center">
             <a href="#" className="text-white text-lg py-2 border-b border-gray-700" onClick={closeMobileMenu}>Home</a>
             <a href="#features" className="text-white text-lg py-2 border-b border-gray-700" onClick={closeMobileMenu}>Features</a>
             <a href="#contact" className="text-white text-lg py-2 border-b border-gray-700" onClick={closeMobileMenu}>Contact</a>
           </nav>
           
-          <div className="flex flex-col gap-3 mt-6">
+          <div className="flex flex-col gap-3 mt-6 items-center">
             <ModeToggle />
             <Button asChild className="bg-primary hover:bg-primary-hover text-black font-bold w-full">
               <Link to={routes.register}>Sign Up</Link>
