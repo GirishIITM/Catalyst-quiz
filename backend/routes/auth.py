@@ -1,44 +1,62 @@
 from flask import Blueprint, request, jsonify
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token
-from models import db, User
+from backend.models import db, User
 import random
 import string
 
 # Blueprint for auth routes
-auth_bp = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 bcrypt = Bcrypt()
 
 # In-memory OTP store (for demo; use persistent store in production)
 otp_store = {}
 
-@auth_bp.route('/signup', methods=['POST'])
-def signup():
+@auth_bp.route('/register', methods=['POST'])
+def register():
     data = request.get_json()
-    email = data.get('email')
     username = data.get('username')
+    email = data.get('email')
     password = data.get('password')
     role = data.get('role')
-    if not all([email, username, password, role]):
-        return jsonify({'msg': 'Missing fields'}), 400
-    if User.query.filter((User.email == email) | (User.username == username)).first():
-        return jsonify({'msg': 'User already exists'}), 409
-    hashed_pw = bcrypt.generate_password_hash(password).decode('utf-8')
-    user = User(email=email, username=username, password_hash=hashed_pw, role=role)
-    db.session.add(user)
+
+    if not all([username, email, password, role]):
+        return jsonify(message="Missing required fields"), 400
+
+    if User.query.filter_by(email=email).first() or User.query.filter_by(username=username).first():
+        return jsonify(message="User already exists"), 409
+
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    
+    new_user = User(
+        username=username,
+        email=email,
+        password_hash=hashed_password,
+        role=role,
+        metadata=data.get('metadata', {})
+    )
+    
+    db.session.add(new_user)
     db.session.commit()
-    return jsonify({'msg': 'User created successfully'}), 201
+    
+    return jsonify(message="User registered successfully"), 201
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
+
+    if not email or not password:
+        return jsonify(message="Email and password are required"), 400
+
     user = User.query.filter_by(email=email).first()
-    if not user or not bcrypt.check_password_hash(user.password_hash, password):
-        return jsonify({'msg': 'Invalid credentials'}), 401
-    access_token = create_access_token(identity=str(user.id))
-    return jsonify({'access_token': access_token, 'user': {'id': str(user.id), 'email': user.email, 'username': user.username, 'role': user.role}})
+
+    if user and bcrypt.check_password_hash(user.password_hash, password):
+        access_token = create_access_token(identity={'id': str(user.id), 'role': user.role})
+        return jsonify(access_token=access_token, role=user.role, username=user.username)
+
+    return jsonify(message="Invalid credentials"), 401
 
 @auth_bp.route('/send-otp', methods=['POST'])
 def send_otp():
