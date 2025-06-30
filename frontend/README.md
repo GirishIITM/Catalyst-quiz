@@ -1,88 +1,88 @@
-# Catalyst Quiz
+# QuizCatalyst AI
 
-**Learn Smarter, Not Harder.**
+QuizCatalyst AI is an AI-powered educational platform built by **Code Catalyst** to empower teachers and students with intelligent quiz creation, automated grading, and real-time feedback.
 
-Catalyst Quiz is an intelligent learning platform designed to bridge the gap between traditional teaching methods and modern technology. It provides a seamless environment where teachers can upload notes and create quizzes, and students can submit answers in various formats, including typed text and handwritten responses via image uploads.
+Whether you're uploading handwritten answers, evaluating student performance, or generating personalized quizzes, QuizCatalyst AI makes learning smarter and more adaptive.
 
-The core of Catalyst Quiz is its advanced AI-powered grading system. Unlike traditional systems that rely on simple keyword matching, our platform uses a sophisticated two-step process to evaluate student answers:
+---
 
-1.  **Fast Semantic Matching**: The system first performs a quick semantic check to determine if an answer is relevant to the question. Irrelevant or nonsensical responses are filtered out efficiently.
-2.  **Deep LLM Analysis**: For relevant answers, a Large Language Model (LLM) conducts a deep analysis to understand the student's reasoning, conceptual understanding, and the steps they took to arrive at the answer.
+## 🚀 Features
 
-This approach allows for a more nuanced and fair evaluation, akin to a more intelligent and optimized version of Gradescope. It's a smart grading system that understands context, not just text.
+- 🔒 **Role-based Login**: Secure registration and login for teachers and students  
+- 📚 **Smart Classrooms**: Teachers can create, manage, and share notes and quizzes within virtual classrooms  
+- 📝 **Quiz Management**: Teachers build quizzes with text and multiple-choice questions  
+- 📤 **Note Uploads**: Upload lecture notes (PDF/DOC), tag them for easy student access  
+- 🤖 **AI Feedback**: Automatic grading and contextual feedback using LLMs  
+- 🖊️ **Handwriting Recognition**: Upload image answers; AI extracts and evaluates content  
+- 📈 **Score Dashboard**: Track submissions, view scores, and monitor learning progress  
+- 🔁 **Student Issue Tracker**: Students can raise issues related to notes, quizzes, or feedback  
+- 🔔 **Real-time Notifications**: Stay updated with classroom events and feedback  
+- 🧠 **Future-Ready AI Additions**:
+  - Plagiarism Detection
+  - Semantic Evaluation & Token Optimization
+  - Re-Review Requests
+  - Personalized Quiz Generation
 
-## Pages and UI Layout
+---
 
-### 1. Landing Page (Home)
-- Hero section: logo, tagline “Learn Smarter, Not Harder”
-- Login / Register buttons
-- Overview of key features: AI Grading, Handwriting Recognition, Smart Feedback
-- Footer: About | Contact | Terms
+## 🛠 Tech Stack
 
-### 2. Authentication Pages
-#### Register (`Register.tsx`)
-- Email & password fields
-- Role selection: Teacher / Student
-- Onboarding flow to create or join a classroom.
-#### Login (`Login.tsx`)
-- Email & password fields
-- Role-based redirection to the appropriate dashboard (Teacher or Student).
+| Layer       | Technology                        |
+|-------------|------------------------------------|
+| Frontend    | React + Shadcn UI (Tailwind)       |
+| Backend     | Flask (Python) + SQLAlchemy ORM    |
+| Database    | PostgreSQL / SQLite (dev)          |
+| AI Models   | Gemini / DeepSeek LLMs             |
+| Auth        | Session-based, Google OAuth (optional) |
 
-### 3. Teacher Dashboard (`TeacherDashboard.tsx`)
-- A centralized hub for each classroom, displaying key statistics and activities.
-- Sidebar links: Dashboard | Create Quiz | Upload Notes | My Quizzes | Classroom | Logout
-- Main panel:
-  - Recent uploads & activities
-  - “Create New Quiz” button
-  - “Upload Lecture Notes” button
+---
 
-### 4. Create Quiz Page (`CreateQuiz.tsx`)
-- Form fields:
-  - Quiz Title & Description
-  - Add Questions: text, answer key, tags, difficulty
-  - Save / Publish buttons
+## 🗃️ Database Schema
 
-### 5. Upload Notes Page (`UploadNotes.tsx`)
-- File upload (PDF / DOC)
-- Title, tags & description fields
-- Submit button
+![Database Diagram](/mnt/data/db-diagram.png)
 
-### 6. Student Dashboard (`StudentDashboard.tsx`)
-- Sidebar links: Dashboard | View Notes | Take Quiz | My Submissions | Logout
-- Main panel:
-  - Recently viewed notes
-  - Assigned quizzes
+---
 
-### 7. View Notes Page (`ViewNotes.tsx`)
-- Search / filter by tags & subjects
-- Note cards with title & preview
-- Full view via modal or redirect
+## ⚙️ Installation (Windows)
 
-### 8. Take Quiz Page (`TakeQuiz.tsx`)
-- List of available quizzes
-- Quiz interface:
-  - Question display
-  - Answer input (text or image upload)
-  - Submit button
+> Prerequisites: Python 3.10+, Node.js 18+, Git
 
-### 9. My Submissions Page (`Submissions.tsx`)
-- List of past quizzes
-- Status indicator: Evaluated / Pending
-- “View Feedback” button
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/GirishIITM/quizcatalyst-ai.git
+   cd quizcatalyst-ai
 
-### 10. AI Evaluation
-- Semantic answer matching (beyond keyword checks)
-- Automated grading with LLM reasoning
-- Plagiarism detection
-- Optional: feedback request & re-evaluation flow
+2. **Backend setup**
+   ```bash
+   cd backend
+   python -m venv venv
+   venv\Scripts\activate
+   pip install -r requirements.txt
+   python app.py
+   ```
 
-### 11. Classroom Overview
-- Teacher view: class roster, statistics, activity feed
+3. **Frontend setup**
+   ```bash
+   cd ../frontend
+   npm install
+   npm run dev
+   ```
 
-## Tech Stack
-- Backend: Flask, PostgreSQL / SQLite, SQLAlchemy ORM  
-- Frontend: React + Vite, TypeScript  
-- UI Library: ShadUI  
-- AI Evaluation: Gemini / DeepSeek LLM models  
+4. **Access app**
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:5000
 
-A one-stop platform where teachers upload notes & quizzes and students access/submit (typed or handwritten) answers. The system uses AI to understand and grade responses semantically rather than by exact text match—making grading smarter and more flexible.
+---
+
+## 💡 Future Scope
+
+We aim to turn QuizCatalyst AI into a personalized tutor that learns from student weaknesses and evolves its quiz content dynamically using large language models.
+
+---
+
+## 🤝 Team – Code Catalyst
+
+- **Girish Bhat**
+- **Arnav Labhasetwar** 
+- **Vedika Vangar**
+- **Preethi Munnaluri**
