@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from backend.models import db, User, Classroom, Quiz, Question, Enrollment, Notes, Submission, StudentIssue, Notification
+from models import db, User, Classroom, Quiz, Question, Enrollment, Notes, Submission, StudentIssue, Notification
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 teacher_bp = Blueprint('teacher', __name__, url_prefix='/teacher')
@@ -182,4 +182,24 @@ def feedback():
 @teacher_no_classroom_bp.route('/submissions')
 @jwt_required()
 def submissions():
-    return jsonify(message="Teacher submissions page") 
+    return jsonify(message="Teacher submissions page")
+
+@teacher_no_classroom_bp.route('/profile', methods=['GET', 'PUT'])
+@jwt_required()
+def teacher_profile():
+    teacher_id = get_current_teacher_id()
+    user = User.query.get_or_404(teacher_id)
+
+    if request.method == 'GET':
+        return jsonify({
+            "username": user.username,
+            "email": user.email,
+            "user_metadata": user.user_metadata
+        })
+    elif request.method == 'PUT':
+        data = request.get_json()
+        user.username = data.get('username', user.username)
+        user.email = data.get('email', user.email)
+        user.user_metadata = data.get('user_metadata', user.user_metadata)
+        db.session.commit()
+        return jsonify(message="Profile updated successfully") 

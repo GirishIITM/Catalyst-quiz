@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token
-from backend.models import db, User
+from models import db, User
 import random
 import string
 
@@ -33,7 +33,7 @@ def register():
         email=email,
         password_hash=hashed_password,
         role=role,
-        metadata=data.get('metadata', {})
+        user_metadata=data.get('metadata', {})
     )
     
     db.session.add(new_user)

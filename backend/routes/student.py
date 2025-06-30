@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from backend.models import db, User, Quiz, Question, Submission, StudentIssue, Notification, StudentAnswer, Enrollment
+from models import db, User, Quiz, Question, Submission, StudentIssue, Notification, StudentAnswer, Enrollment
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import uuid
 
@@ -35,13 +35,13 @@ def profile():
         return jsonify({
             "username": user.username,
             "email": user.email,
-            "metadata": user.metadata
+            "user_metadata": user.user_metadata
         })
     elif request.method == 'PUT':
         data = request.get_json()
         user.username = data.get('username', user.username)
         user.email = data.get('email', user.email)
-        # Add more fields to update as needed
+        user.user_metadata = data.get('user_metadata', user.user_metadata)
         db.session.commit()
         return jsonify(message="Profile updated successfully")
 

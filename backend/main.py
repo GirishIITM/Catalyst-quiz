@@ -2,11 +2,11 @@ from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_bcrypt import Bcrypt
-from backend.models import db
-from backend.routes import home_bp
-from backend.routes.auth import auth_bp
-from backend.routes.student import student_bp
-from backend.routes.teacher import teacher_bp, teacher_no_classroom_bp
+from models import db
+from routes import home_bp
+from routes.auth import auth_bp
+from routes.student import student_bp
+from routes.teacher import teacher_bp, teacher_no_classroom_bp
 import os
 
 def create_app(database_uri='sqlite:///app.db'):

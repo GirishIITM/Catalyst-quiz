@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from sqlalchemy.dialects.postgresql import UUID, ARRAY
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import Enum, ForeignKey, JSON, Text, Boolean, Float, String, Integer, DateTime
 from sqlalchemy.orm import relationship
 from . import db
@@ -13,7 +13,7 @@ class User(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     role = db.Column(Enum('teacher', 'student', name='user_roles'), nullable=False)
-    metadata = db.Column(JSON, default={})
+    user_metadata = db.Column(JSON, default={})
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     # Relationships
@@ -56,7 +56,7 @@ class Quiz(db.Model):
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(Text)
     classroom_id = db.Column(UUID(as_uuid=True), db.ForeignKey('classrooms.id'), nullable=False)
-    tags = db.Column(ARRAY(db.String), default=[])
+    tags = db.Column(JSON, default=list)
     difficulty = db.Column(Enum('easy', 'medium', 'hard', name='quiz_difficulty'), nullable=False)
     is_published = db.Column(Boolean, default=False)
     deadline = db.Column(db.DateTime)
@@ -75,7 +75,7 @@ class Question(db.Model):
     question_text = db.Column(Text, nullable=False)
     question_type = db.Column(Enum('text', 'mcq_single', 'mcq_multiple', 'image_upload', 'date', 'time', name='question_types'), nullable=False)
     answer_key = db.Column(JSON)
-    tags = db.Column(ARRAY(db.String), default=[])
+    tags = db.Column(JSON, default=list)
     difficulty = db.Column(Enum('easy', 'medium', 'hard', name='question_difficulty'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     # Relationships
@@ -102,7 +102,7 @@ class Notes(db.Model):
     classroom_id = db.Column(UUID(as_uuid=True), db.ForeignKey('classrooms.id'), nullable=False)
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(Text)
-    tags = db.Column(ARRAY(db.String), default=[])
+    tags = db.Column(JSON, default=list)
     file_url = db.Column(db.String(255))
     uploaded_at = db.Column(db.DateTime, default=datetime.utcnow)
     # Relationships
