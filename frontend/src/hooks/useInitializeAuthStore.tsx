@@ -5,6 +5,10 @@ export const initializeAuthStore = (): initStoreProps => {
   const user: user | null = JSON.parse(localStorage.getItem("user") || "null");
   const token = localStorage.getItem("token");
   const classroomId = localStorage.getItem("classroomId");
+  const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+  
+  authStore.getState().setTheme(savedTheme || "light");
+  
   if (user) {
     authStore.getState().setUser(user);
     authStore.getState().setToken(token);

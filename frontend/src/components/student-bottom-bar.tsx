@@ -36,7 +36,7 @@ function StudentBottomBar() {
   ];
 
   return (
-    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 mb-5 px-6 py-3 bg-white backdrop-blur-md bg-opacity-80 dark:bg-gray-900/90 rounded-full shadow-2xl ring-1 ring-black/10 z-50 md:hidden transition-all">
+    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 mb-5 px-6 py-3 bg-white backdrop-blur-md bg-opacity-80 dark:bg-gray-900/90 rounded-full shadow-2xl ring-1 ring-black/10 z-40 md:hidden transition-all">
       <div className="flex justify-between items-center space-x-6">
         {links.map((link) => (
           <Link

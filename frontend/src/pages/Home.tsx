@@ -1,10 +1,18 @@
-import "../styles/home.css";
-import Login from "./Login";
+import { Header } from "@/components/Header";
+import { HeroSection } from "@/components/HeroSection";
+import { FeaturesSection } from "@/components/FeaturesSection";
+import { TestimonialsSection } from "@/components/TestimonialsSection";
+import { Footer } from "@/components/Footer";
 
-export default function Home() {
+function Home() {
   return (
-    <div className="home">home
-    <Login />
+    <div className="min-h-screen bg-background text-foreground font-sans">
+      <Header />
+      <HeroSection />
+      <FeaturesSection />
+      <TestimonialsSection />
+      <Footer />
     </div>
-  )
+  );
 }
+export default Home;

@@ -5,10 +5,12 @@ export interface AuthState {
   user: user
   token: string | null;
   classroomId?: string;
+  theme: 'light' | 'dark';
+  setTheme: (theme: 'light' | 'dark') => void;
+  setClassroomId: (classroomId: string) => void;
   setUser: (user: user) => void;
   logout: () => void;
   setToken: (token: string | null) => void;
-  setClassroomId: (classroomId: string) => void;
 }
 
 export type initStoreProps = {

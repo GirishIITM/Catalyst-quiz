@@ -79,6 +79,13 @@
   --sidebar-active-link-bg: oklch(70.09% 0.20117 44.755 / 0.466);
   --auth-primary: oklch(0.847 0.188 95.43);
   --auth-primary-hover: oklch(0.791 0.205 95.43);
+  --footer-callout: #d7cbff;
+  --muted-foreground: #6b7280;
+  --footer-bg: #f8fafc;
+  --footer-text: #374151;
+  --footer-border: #e5e7eb;
+  --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --card-border-color: oklch(0.922 0 0);
 }
 
 .dark {
@@ -116,6 +123,34 @@
   --sidebar-active-link-bg: oklch(70.09% 0.20117 44.755 / 0.836);
   --auth-primary: oklch(0.791 0.205 95.43);
   --auth-primary-hover: oklch(0.737 0.222 95.43);
+  --footer-bg: #1f2937;
+  --footer-text: #d1d5db;
+  --footer-border: #374151;
+  --card-shadow: 0 1px 3px 0 rgb(255 255 255 / 0.05), 0 1px 2px -1px rgb(255 255 255 / 0.05);
+  --card-border-color: oklch(1 0 0 / 15%);
+}
+
+:root {
+  --primary: #facc15;
+  --primary-hover: #f59e0b;
+  --primary-light: #fef3c7;
+  --card-purple: #e5d4fd;
+  --card-purple-light: #f3f4f6;
+  --card-green: #e9ff95;
+  --card-green-light: #f0fff4;
+  --card-orange: #ffccbd;
+  --card-orange-light: #fff7ed;
+  --card-highlight: #facc159c;
+  --card-rating: #fffbe6;
+  --footer-callout: #d7cbff;
+  --muted-foreground: #6b7280;
+  --footer-bg: #f8fafc;
+  --footer-text: #374151;
+  --footer-border: #e5e7eb;
+}
+
+.font-sans {
+  font-family: 'Segoe UI', sans-serif;
 }
 
 @layer base {
