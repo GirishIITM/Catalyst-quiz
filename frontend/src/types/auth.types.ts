@@ -3,8 +3,10 @@ export type user =  null | { id: string; name: string, role: "teacher" | "studen
 export interface AuthState {
   isAuthenticated: boolean;
   user: user
+  theme: 'light' | 'dark';
   token: string | null;
   classroomId?: string;
+  setTheme: (theme: 'light' | 'dark') => void;
   setUser: (user: user) => void;
   logout: () => void;
   setToken: (token: string | null) => void;
