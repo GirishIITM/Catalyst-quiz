@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from backend.models import db, User, Classroom, Quiz, Question, Enrollment, Notes, Submission, StudentIssue, Notification, StudentAnswer
+from backend.models import db, User, Quiz, Question, Submission, StudentIssue, Notification, StudentAnswer, Enrollment
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import uuid
 
