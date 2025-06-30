@@ -1,6 +1,6 @@
 "use client"
 
-import { AudioWaveform, Bell, BookOpen, Command, FlaskConical, GalleryVerticalEnd, Plus, Upload } from "lucide-react"
+import { Bell, BookOpen, FlaskConical, Plus, Upload } from "lucide-react"
 import type * as React from "react"
 
 import { NavMain } from "@/components/nav-main"
@@ -20,17 +20,14 @@ const data = {
   teams: [
     {
       name: "Math 101",
-      logo: GalleryVerticalEnd,
       plan: "Active",
     },
     {
-      name: "Physics 201",
-      logo: AudioWaveform,
+      name: "Physics 201", 
       plan: "Active",
     },
     {
       name: "Chemistry 301",
-      logo: Command,
       plan: "Archived",
     },
   ],

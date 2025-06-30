@@ -8,5 +8,6 @@ export { default as writing } from './writing.png';
 export { default as quiz } from './quiz.png';
 export { default as book } from './book.png';
 export { default as hat } from './hat.png';
+export { default as logo } from './logo.png';
 
 export { boysingin };

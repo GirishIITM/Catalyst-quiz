@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { smartclasshub, book, hat } from "@/assets";
+import { logo, book, hat } from "@/assets";
 
 export function Footer() {
   const [email, setEmail] = useState("");
@@ -29,7 +29,7 @@ export function Footer() {
       <div className="bg-footer-bg dark:bg-gray-900 pt-8">
         <div className="flex flex-wrap justify-between px-4 md:px-8 lg:px-16 max-w-7xl mx-auto gap-8 mb-8">
           <div className="flex-1 min-w-[200px]">
-            <img src={smartclasshub} alt="QuizCatalyst AI Logo" className="w-25 mb-4" />
+            <img src={logo} alt="QuizCatalyst AI Logo" className="w-25 mb-4" />
             <p className="text-sm text-footer-text/70 dark:text-muted-foreground leading-relaxed mb-4">
               Building a Learning Space That Feels Like Home.
               Creating a classroom—online or offline—is more than just sharing content. It's about years of dedication, dreams, and thoughtful choices coming together to support every learner's journey.
