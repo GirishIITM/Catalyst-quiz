@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from models import db, User, Quiz, Question, Submission, StudentIssue, Notification, StudentAnswer, Enrollment
+from models import *
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import uuid
 
@@ -148,7 +148,34 @@ def quiz_result(quiz_id):
     student_id = get_current_student_id()
     submission = Submission.query.filter_by(quiz_id=quiz_id, student_id=student_id).first_or_404()
     
-    # In a real app, you might calculate the score here if it's not already done
+    # Calculate the score if not already calculated
+    if submission.score is None:
+        total_questions = Question.query.filter_by(quiz_id=quiz_id).count()
+        if total_questions == 0:
+            submission.score = 0
+        else:
+            correct_answers = 0
+            student_answers = StudentAnswer.query.filter_by(submission_id=submission.id).all()
+            
+            for student_answer in student_answers:
+                question = Question.query.get(student_answer.question_id)
+                if question.question_type == 'multiple_choice':
+                    # Check if the selected option is correct
+                    selected_option = Option.query.filter_by(
+                        id=student_answer.response_text,
+                        question_id=question.id
+                    ).first()
+                    if selected_option and selected_option.is_correct:
+                        correct_answers += 1
+                elif question.question_type == 'text':
+                    # For text questions, you might need manual grading
+                    # For now, we'll mark as correct if there's any response
+                    if student_answer.response_text and student_answer.response_text.strip():
+                        correct_answers += 1
+            
+            submission.score = (correct_answers / total_questions) * 100
+            db.session.commit()
+    
     return jsonify({
         "status": submission.status,
         "score": submission.score,

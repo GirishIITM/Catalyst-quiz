@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from models import db, User, Classroom, Quiz, Question, Enrollment, Notes, Submission, StudentIssue, Notification
+from models import *
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 teacher_bp = Blueprint('teacher', __name__, url_prefix='/teacher')
@@ -8,7 +8,6 @@ def get_current_teacher_id():
     identity = get_jwt_identity()
     if identity.get('role') != 'teacher':
         # This will prevent students from accessing teacher routes.
-        # A more robust solution would be a custom decorator.
         raise Exception("Teacher role required")
     return identity['id']
 
@@ -41,7 +40,6 @@ def edit_classroom(classroom_id):
 def delete_classroom(classroom_id):
     teacher_id = get_current_teacher_id()
     classroom = Classroom.query.filter_by(id=classroom_id, teacher_id=teacher_id).first_or_404(description="Classroom not found or you don't have permission.")
-    # Note: Consider cascade deletes in your model for related items (quizzes, enrollments, etc.)
     db.session.delete(classroom)
     db.session.commit()
     return jsonify(message="Classroom deleted successfully")
@@ -96,8 +94,11 @@ def add_quiz(classroom_id):
 @teacher_bp.route('/quiz/<uuid:quiz_id>', methods=['PUT'])
 @jwt_required()
 def edit_quiz(quiz_id):
+    teacher_id = get_current_teacher_id()
     quiz = Quiz.query.get_or_404(quiz_id)
     # Add authorization check here if needed
+    if quiz.classroom.teacher_id != teacher_id:
+        return jsonify(message="You don't have permission to edit this quiz"), 403
     data = request.get_json()
     quiz.title = data.get('title', quiz.title)
     quiz.description = data.get('description', quiz.description)
@@ -108,8 +109,11 @@ def edit_quiz(quiz_id):
 @teacher_bp.route('/quiz/<uuid:quiz_id>', methods=['DELETE'])
 @jwt_required()
 def delete_quiz(quiz_id):
+    teacher_id = get_current_teacher_id()
     quiz = Quiz.query.get_or_404(quiz_id)
     # Add authorization check here
+    if quiz.classroom.teacher_id != teacher_id:
+        return jsonify(message="You don't have permission to delete this quiz"), 403
     db.session.delete(quiz)
     db.session.commit()
     return jsonify(message="Quiz deleted successfully")
@@ -132,8 +136,11 @@ def add_question(quiz_id):
 @teacher_bp.route('/question/<uuid:question_id>', methods=['PUT', 'DELETE'])
 @jwt_required()
 def manage_question(question_id):
+    teacher_id = get_current_teacher_id()
     question = Question.query.get_or_404(question_id)
     # Add authorization check
+    if question.quiz.classroom.teacher_id != teacher_id:
+        return jsonify(message="You don't have permission to modify this question"), 403
     if request.method == 'PUT':
         data = request.get_json()
         question.question_text = data.get('question_text', question.question_text)
@@ -150,8 +157,7 @@ def manage_question(question_id):
 @jwt_required()
 def get_student_issues():
     teacher_id = get_current_teacher_id()
-    # Get issues from all classrooms taught by the teacher
-    issues = StudentIssue.query.join(Classroom).filter(Classroom.teacher_id == teacher_id).all()
+    issues = db.session.query(StudentIssue).join(Classroom).filter(Classroom.teacher_id == teacher_id).all()
     return jsonify([{"id": i.id, "title": i.title, "description": i.description, "status": i.status} for i in issues])
 
 @teacher_bp.route('/updates')
