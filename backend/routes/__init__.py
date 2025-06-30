@@ -1,5 +1,8 @@
+from flask import Blueprint, jsonify
 from .auth import auth_bp
 
+home_bp = Blueprint('home', __name__)
 
-def register_routes(app):
-    app.register_blueprint(auth_bp)
+@home_bp.route('/')
+def index():
+    return jsonify(message="Welcome to the Catalyst-Quiz API")
