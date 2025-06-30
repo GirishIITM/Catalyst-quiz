@@ -1,11 +1,14 @@
+import { authApi } from "@/api";
 import { boysingin } from "@/assets";
-import { Button } from "@/components/ui/button";
 import { Header } from "@/components/navbar";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { authStore } from "@/states/auth";
+import { loadingStore } from "@/states/loading";
 import { routes } from "@/types/routes";
 import { generateRoute } from "@/utils/routeUtils";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
@@ -14,7 +17,8 @@ function Login() {
     password: "",
   });
 
-  const { setClassroomId, setUser } = authStore((state) => state);
+  const { setClassroomId, setUser, setToken } = authStore((state) => state);
+  const { setLoading } = loadingStore();
   const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,22 +31,39 @@ function Login() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Mock login logic
-    const classroomId = "math-101";
-    setClassroomId(classroomId);
+    setLoading(true);
+    authApi
+      .login(formData)
+      .then((response) => {
+        setToken(response.access_token);
 
-    const user = {
-      id: "student-123",
-      name: "Test User",
-      role: "student" as const,
-    };
+        const user = {
+          id: response.username,
+          name: response.username,
+          role: response.role,
+        };
 
-    setUser(user);
+        setUser(user);
 
-    const route = generateRoute(routes.student.dashboard, {
-      classroom: classroomId,
-    });
-    navigate(route);
+        const classroomId = "default-classroom-" + user.id;
+        setClassroomId(classroomId);
+
+        toast.success("Login successful!");
+
+        const route = generateRoute(routes[response.role].dashboard, {
+          classroom: classroomId,
+        });
+        navigate(route);
+      })
+      .catch((err) => {
+        toast.error(
+          err.response?.data?.message || "Login failed. Please try again."
+        );
+        console.error("Login error:", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -50,7 +71,7 @@ function Login() {
       <Header />
       <div className="min-h-screen bg-background flex justify-center items-center p-5 pt-24">
         <div className="flex max-w-4xl w-full h-[600px] rounded-2xl shadow-lg bg-card">
-          <div className="flex-1 flex justify-center items-center p-8 bg-card md:flex hidden">
+          <div className="flex-1 justify-center items-center p-8 bg-card md:flex hidden">
             <img
               src={boysingin}
               alt="Student Image"
@@ -93,7 +114,10 @@ function Login() {
 
               <p className="text-sm text-muted-foreground text-center mt-4">
                 Don't have an account?{" "}
-                <Link to={routes.register} className="text-primary hover:underline">
+                <Link
+                  to={routes.register}
+                  className="text-primary hover:underline"
+                >
                   Sign Up
                 </Link>
               </p>
@@ -102,20 +126,12 @@ function Login() {
         </div>
 
         <div className="md:hidden flex flex-col h-screen w-full pt-20">
-          <div className="flex-[3] flex justify-center items-center p-3 -mt-5">
-            <img
-              src={boysingin}
-              alt="Student Image"
-              className="max-w-[55%] h-auto object-contain"
-            />
-          </div>
+          <div className="flex-1 flex flex-col justify-center items-center">
+            <h2 className="text-3xl font-semibold text-card-foreground text-center mb-6">
+              Welcome Back
+            </h2>
 
-          <div className="flex-[7] p-5 -mt-11">
             <form onSubmit={handleLogin} className="w-full space-y-4">
-              <h2 className="text-2xl font-semibold text-foreground text-center mb-6">
-                Welcome Back
-              </h2>
-
               <Input
                 type="email"
                 name="email"
@@ -141,9 +157,12 @@ function Login() {
                 Sign In
               </Button>
 
-              <p className="text-sm text-muted-foreground text-center">
+              <p className="text-sm text-muted-foreground text-center mt-4">
                 Don't have an account?{" "}
-                <Link to={routes.register} className="text-primary hover:underline">
+                <Link
+                  to={routes.register}
+                  className="text-primary hover:underline"
+                >
                   Sign Up
                 </Link>
               </p>

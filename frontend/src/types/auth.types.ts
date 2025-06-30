@@ -1,4 +1,4 @@
-export type user =  null | { id: string; name: string, role: "teacher" | "student" };
+export type user = null | { id: string; name: string, role: "teacher" | "student" };
 
 export interface AuthState {
   isAuthenticated: boolean;
@@ -17,4 +17,11 @@ export type initStoreProps = {
   user: user | null;
   token: string | null;
   classroomId: string;
+}
+
+export type registerFormData = {
+  username: string; email: string;
+  password: string; name: string; confirmPassword: string
+  role: 'teacher' | 'student';
+  metadata?: Record<string, any>;
 }
