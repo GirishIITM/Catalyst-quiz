@@ -18,8 +18,10 @@ def create_app():
 
     use_postgres = os.getenv("USE_POSTGRES", "false").lower() == "true"
     if use_postgres:
+        print("Using PostgreSQL database")
         app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")   
     else:
+        print("Using SQLite database")
         app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"
 
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -46,4 +48,4 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5000)

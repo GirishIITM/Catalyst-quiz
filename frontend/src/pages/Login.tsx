@@ -7,6 +7,7 @@ import { authStore } from "@/states/auth";
 import { loadingStore } from "@/states/loading";
 import { routes } from "@/types/routes";
 import { generateRoute } from "@/utils/routeUtils";
+import { validateLoginForm } from "@/utils/validator";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,6 +17,8 @@ function Login() {
     email: "",
     password: "",
   });
+
+  const [error, setError] = useState<string | null>(null);
 
   const { setClassroomId, setUser, setToken } = authStore((state) => state);
   const { setLoading } = loadingStore();
@@ -30,10 +33,24 @@ function Login() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    const { hasError, errors, isEmail } = validateLoginForm(formData);
+    
+    if (hasError) {
+      setError(
+        errors.email || errors.username || errors.password || null
+      );
+      return;
+    }
+
+    setError(null);
+
+    const loginPayload = isEmail 
+      ? { email: formData.email, password: formData.password }
+      : { username: formData.email, password: formData.password };
 
     setLoading(true);
     authApi
-      .login(formData)
+      .login(loginPayload)
       .then((response) => {
         setToken(response.access_token);
 
@@ -85,15 +102,17 @@ function Login() {
                 Welcome Back
               </h2>
 
-              <Input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-                className="w-full"
-              />
+              <div className="mb-3">
+                <Input
+                  name="email"
+                  placeholder="Email or Username"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full"
+                />
+                {error && <p className="text-red-500 text-[12px]">{error}</p>}
+              </div>
 
               <Input
                 type="password"

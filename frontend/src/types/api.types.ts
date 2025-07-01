@@ -1,7 +1,14 @@
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
+export type LoginRequest =
+  | {
+    email: string;
+    username?: never;
+    password: string;
+  }
+  | {
+    email?: never;
+    username: string;
+    password: string;
+  };
 
 export interface LoginResponse {
   access_token: string;

@@ -20,6 +20,30 @@ export const usernameValidator = (username: string): boolean => {
   return usernameRegex.test(username);
 }
 
+export const validateLoginForm = (props: { email: string; password: string }) => {
+  const { email: input, password } = props;
+  const errors: { email?: string, username?: string, password?: string } = {};
+
+  if (!input) {
+    errors.email = "Email or username is required";
+    return { hasError: true, errors, isEmail: false };
+  }
+
+  if (!password) {
+    errors.password = "Password is required";
+    return { hasError: true, errors, isEmail: false };
+  }
+
+  const isEmail = emailValidator(input);
+  
+  if (!isEmail && !usernameValidator(input)) {
+    errors.email = "Invalid email or username format";
+    return { hasError: true, errors, isEmail: false };
+  }
+
+  return { hasError: false, errors, isEmail };
+}
+
 export const validateForm = (props: { formData: registerFormData, allowWeakPassword: boolean }) => {
   const errors: registerFormData = {
     email: "",
