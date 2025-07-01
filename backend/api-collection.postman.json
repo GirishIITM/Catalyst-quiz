@@ -1,0 +1,404 @@
+{
+  "info": {
+    "_postman_id": "catalyst-quiz-api-collection",
+    "name": "Catalyst Quiz API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"password\": \"yourpassword\",\n  \"role\": \"student\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/auth/register", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"yourpassword\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/auth/login", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Send OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/auth/send-otp", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["auth", "send-otp"] }
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/auth/verify-otp", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["auth", "verify-otp"] }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"new_password\": \"newpass\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/auth/forgot-password", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["auth", "forgot-password"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Student",
+      "item": [
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/student/{{classroom_id}}/dashboard", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["student", "{{classroom_id}}", "dashboard"] }
+          }
+        },
+        {
+          "name": "Profile (GET)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/student/profile", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["student", "profile"] }
+          }
+        },
+        {
+          "name": "Profile (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"updateduser\",\n  \"email\": \"updated@example.com\",\n  \"user_metadata\": {}\n}"
+            },
+            "url": { "raw": "http://localhost:5000/student/profile", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["student", "profile"] }
+          }
+        },
+        {
+          "name": "View Notes",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/student/{{classroom_id}}/notes", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["student", "{{classroom_id}}", "notes"] }
+          }
+        },
+        {
+          "name": "View Quizzes",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/student/{{classroom_id}}/quizzes", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["student", "{{classroom_id}}", "quizzes"] }
+          }
+        },
+        {
+          "name": "Quiz Start",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/student/{{classroom_id}}/quiz-start/{{quiz_id}}", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["student", "{{classroom_id}}", "quiz-start", "{{quiz_id}}"] }
+          }
+        },
+        {
+          "name": "Handle Question (GET)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/student/{{quiz_id}}/question/{{question_id}}", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["student", "{{quiz_id}}", "question", "{{question_id}}"] }
+          }
+        },
+        {
+          "name": "Handle Question (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"response_text\": \"answer\",\n  \"response_image_url\": \"\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/student/{{quiz_id}}/question/{{question_id}}", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["student", "{{quiz_id}}", "question", "{{question_id}}"] }
+          }
+        },
+        {
+          "name": "Quiz Result",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/student/{{quiz_id}}/result", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["student", "{{quiz_id}}", "result"] }
+          }
+        },
+        {
+          "name": "Report Issue",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Issue title\",\n  \"description\": \"Describe the issue\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/student/{{classroom_id}}/report-issue", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["student", "{{classroom_id}}", "report-issue"] }
+          }
+        },
+        {
+          "name": "Updates",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/student/updates", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["student", "updates"] }
+          }
+        },
+        {
+          "name": "Submissions",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/student/{{classroom_id}}/submissions", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["student", "{{classroom_id}}", "submissions"] }
+          }
+        },
+        {
+          "name": "Feedback",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/student/{{classroom_id}}/feedback", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["student", "{{classroom_id}}", "feedback"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Teacher",
+      "item": [
+        {
+          "name": "Add Classroom",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Classroom Name\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/teacher/add-classroom", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["teacher", "add-classroom"] }
+          }
+        },
+        {
+          "name": "Edit Classroom",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Classroom Name\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/teacher/{{classroom_id}}", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["teacher", "{{classroom_id}}"] }
+          }
+        },
+        {
+          "name": "Delete Classroom",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/teacher/{{classroom_id}}", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["teacher", "{{classroom_id}}"] }
+          }
+        },
+        {
+          "name": "Add Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"student@example.com\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/teacher/{{classroom_id}}/add-student", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["teacher", "{{classroom_id}}", "add-student"] }
+          }
+        },
+        {
+          "name": "Add Quiz",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Quiz Title\",\n  \"description\": \"Description\",\n  \"difficulty\": \"medium\",\n  \"deadline\": \"2024-12-31T23:59:59Z\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/teacher/{{classroom_id}}/add-quiz", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["teacher", "{{classroom_id}}", "add-quiz"] }
+          }
+        },
+        {
+          "name": "Edit Quiz",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Quiz Title\",\n  \"description\": \"Updated Description\",\n  \"is_published\": true\n}"
+            },
+            "url": { "raw": "http://localhost:5000/teacher/quiz/{{quiz_id}}", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["teacher", "quiz", "{{quiz_id}}"] }
+          }
+        },
+        {
+          "name": "Delete Quiz",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/teacher/quiz/{{quiz_id}}", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["teacher", "quiz", "{{quiz_id}}"] }
+          }
+        },
+        {
+          "name": "Add Question",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question_text\": \"What is 2+2?\",\n  \"question_type\": \"multiple_choice\",\n  \"answer_key\": \"4\",\n  \"difficulty\": \"easy\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/teacher/{{quiz_id}}/add-question", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["teacher", "{{quiz_id}}", "add-question"] }
+          }
+        },
+        {
+          "name": "Manage Question (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question_text\": \"Updated question?\",\n  \"answer_key\": \"updated\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/teacher/question/{{question_id}}", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["teacher", "question", "{{question_id}}"] }
+          }
+        },
+        {
+          "name": "Manage Question (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/teacher/question/{{question_id}}", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["teacher", "question", "{{question_id}}"] }
+          }
+        },
+        {
+          "name": "Student Issues",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/teacher/student-issues", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["teacher", "student-issues"] }
+          }
+        },
+        {
+          "name": "Updates",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/teacher/updates", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["teacher", "updates"] }
+          }
+        },
+        {
+          "name": "Classrooms",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer <token>" }
+            ],
+            "url": { "raw": "http://localhost:5000/teacher/classrooms", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["teacher", "classrooms"] }
+          }
+        }
+      ]
+    }
+  ]
+} 

@@ -12,6 +12,7 @@ bcrypt = Bcrypt()
 # In-memory OTP store (for demo; use persistent store in production)
 otp_store = {}
 
+# Ensure question_type in API requests is one of: text, mcq_single, mcq_multiple, image_upload, date, time
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
@@ -43,7 +44,8 @@ def register():
 
         return jsonify(message="User registered successfully"), 201
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 
 @auth_bp.route('/login', methods=['POST'])
@@ -75,7 +77,8 @@ def login():
 
         return jsonify(message="Invalid credentials"), 401
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 
 @auth_bp.route('/send-otp', methods=['POST'])
@@ -92,7 +95,8 @@ def send_otp():
         print(f"OTP for {email}: {otp}")
         return jsonify({'msg': 'OTP sent'}), 200
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 
 @auth_bp.route('/verify-otp', methods=['POST'])
@@ -106,7 +110,8 @@ def verify_otp():
             return jsonify({'msg': 'OTP verified'}), 200
         return jsonify({'msg': 'Invalid OTP'}), 400
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 
 @auth_bp.route('/forgot-password', methods=['POST'])
@@ -127,4 +132,5 @@ def forgot_password():
         del otp_store[email]
         return jsonify({'msg': 'Password reset successful'}), 200
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500

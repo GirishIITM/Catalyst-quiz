@@ -24,7 +24,8 @@ def student_dashboard(classroom_id):
             "recent_submissions": [{"quiz_title": s.quiz.title, "score": s.score} for s in submissions]
         })
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @student_bp.route('/profile', methods=['GET', 'PUT'])
 @jwt_required()
@@ -49,7 +50,8 @@ def profile():
             db.session.commit()
             return jsonify(message="Profile updated successfully")
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @student_bp.route('/<uuid:classroom_id>/notes')
 @jwt_required()
@@ -64,7 +66,8 @@ def view_notes(classroom_id):
             "uploaded_at": note.uploaded_at
         } for note in notes])
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @student_bp.route('/<uuid:classroom_id>/quizzes')
 @jwt_required()
@@ -78,7 +81,8 @@ def view_quizzes(classroom_id):
             "deadline": quiz.deadline
         } for quiz in quizzes])
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @student_bp.route('/<uuid:classroom_id>/quiz-start/<uuid:quiz_id>')
 @jwt_required()
@@ -98,7 +102,8 @@ def quiz_start(classroom_id, quiz_id):
             "first_question_id": first_question.id if first_question else None
         })
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @student_bp.route('/<uuid:quiz_id>/question/<uuid:question_id>', methods=['GET', 'POST'])
 @jwt_required()
@@ -158,7 +163,8 @@ def handle_question(quiz_id, question_id):
             db.session.commit()
             return jsonify(message="Answer submitted successfully")
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @student_bp.route('/<uuid:quiz_id>/result')
 @jwt_required()
@@ -201,7 +207,8 @@ def quiz_result(quiz_id):
             "submitted_at": submission.submitted_at
         })
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @student_bp.route('/<uuid:classroom_id>/report-issue', methods=['POST'])
 @jwt_required()
@@ -209,12 +216,13 @@ def report_issue(classroom_id):
     try:
         student_id = get_current_student_id()
         data = request.get_json()
+        related_type = data.get('related_type') or 'general'
         new_issue = StudentIssue(
             student_id=student_id,
             classroom_id=classroom_id,
             title=data['title'],
             description=data.get('description'),
-            related_type=data.get('related_type'),
+            related_type=related_type,
             related_id=data.get('related_id'),
             status='open'
         )
@@ -222,7 +230,8 @@ def report_issue(classroom_id):
         db.session.commit()
         return jsonify(message="Issue reported successfully"), 201
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @student_bp.route('/updates')
 @jwt_required()
@@ -232,20 +241,23 @@ def student_updates():
         notifications = Notification.query.filter_by(user_id=student_id).order_by(Notification.created_at.desc()).all()
         return jsonify([{"id": n.id, "title": n.title, "message": n.message} for n in notifications])
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
-@student_bp.route('/submissions')
+@student_bp.route('/<uuid:classroom_id>/submissions')
 @jwt_required()
 def submissions(classroom_id):
     try:
         return jsonify(message=f"Viewing submissions for classroom {classroom_id}")
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
-@student_bp.route('/feedback')
+@student_bp.route('/<uuid:classroom_id>/feedback')
 @jwt_required()
 def feedback(classroom_id):
     try:
         return jsonify(message=f"Viewing feedback for classroom {classroom_id}")
     except Exception as e:
-        return jsonify(message="Internal server error", error=str(e)), 500 
+        print(str(e))
+        return jsonify(message="Internal server error"), 500 

@@ -11,12 +11,15 @@ def get_current_teacher_id():
         raise Exception("Teacher role required")
     return identity
 
+# Ensure question_type in API requests is one of: text, mcq_single, mcq_multiple, image_upload, date, time
+
 # CLASSROOM MANAGEMENT
 @teacher_bp.route('/add-classroom', methods=['POST'])
 @jwt_required()
 def add_classroom():
     try:
         teacher_id = get_current_teacher_id()
+        print(f"[DEBUG] Creating classroom for teacher_id: {teacher_id}")
         data = request.get_json()
         if not data or 'name' not in data:
             return jsonify(message="Classroom name is required"), 400
@@ -24,10 +27,11 @@ def add_classroom():
         new_classroom = Classroom(name=data['name'], teacher_id=teacher_id)
         db.session.add(new_classroom)
         db.session.commit()
+        print(f"[DEBUG] Created classroom with id: {new_classroom.id} and teacher_id: {new_classroom.teacher_id}")
         return jsonify({"message": "Classroom created successfully", "classroom_id": new_classroom.id}), 201
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @teacher_bp.route('/<uuid:classroom_id>', methods=['PUT'])
 @jwt_required()
@@ -40,8 +44,8 @@ def edit_classroom(classroom_id):
         db.session.commit()
         return jsonify(message="Classroom updated successfully")
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @teacher_bp.route('/<uuid:classroom_id>', methods=['DELETE'])
 @jwt_required()
@@ -53,8 +57,8 @@ def delete_classroom(classroom_id):
         db.session.commit()
         return jsonify(message="Classroom deleted successfully")
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @teacher_bp.route('/<uuid:classroom_id>/add-student', methods=['POST'])
 @jwt_required()
@@ -72,15 +76,15 @@ def add_student(classroom_id):
             return jsonify(message="Student already enrolled in this classroom"), 409
             
         enrollment = Enrollment(classroom_id=classroom_id, student_id=student.id)
-        notification = Notification(user_id=student.id, type="classroom_update", title="Added to new class", message="You have been added to a new classroom.")
+        notification = Notification(user_id=student.id, type="classroom_update", title="Added to new class", message="You have been added to a new classroom.", related_type='none')
         
         db.session.add(enrollment)
         db.session.add(notification)
         db.session.commit()
         return jsonify(message="Student added and notified successfully"), 201
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 # QUIZ & QUESTION MANAGEMENT
 @teacher_bp.route('/<uuid:classroom_id>/add-quiz', methods=['POST'])
@@ -88,7 +92,8 @@ def add_student(classroom_id):
 def add_quiz(classroom_id):
     try:
         teacher_id = get_current_teacher_id()
-        Classroom.query.filter_by(id=classroom_id, teacher_id=teacher_id).first_or_404(description="Classroom not found or you don't have permission.")
+        print(f"[DEBUG] Adding quiz to classroom_id: {classroom_id} for teacher_id: {teacher_id}")
+        classroom = Classroom.query.filter_by(id=classroom_id, teacher_id=teacher_id).first_or_404(description="Classroom not found or you don't have permission.")
         
         data = request.get_json()
         new_quiz = Quiz(
@@ -102,14 +107,15 @@ def add_quiz(classroom_id):
         
         enrollments = Enrollment.query.filter_by(classroom_id=classroom_id).all()
         for enrollment in enrollments:
-            notification = Notification(user_id=enrollment.student_id, type="quiz_assigned", title="New Quiz Assigned", message=f"A new quiz '{new_quiz.title}' has been assigned.")
+            notification = Notification(user_id=enrollment.student_id, type="quiz_assigned", title="New Quiz Assigned", message=f"A new quiz '{new_quiz.title}' has been assigned.", related_type='none')
             db.session.add(notification)
             
         db.session.commit()
+        print(f"[DEBUG] Created quiz with id: {new_quiz.id} for classroom_id: {classroom_id}")
         return jsonify({"message": "Quiz added and students notified", "quiz_id": str(new_quiz.id)}), 201
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @teacher_bp.route('/quiz/<uuid:quiz_id>', methods=['PUT'])
 @jwt_required()
@@ -117,7 +123,7 @@ def edit_quiz(quiz_id):
     try:
         teacher_id = get_current_teacher_id()
         quiz = Quiz.query.get_or_404(quiz_id)
-        # Add authorization check here if needed
+        print(f"[DEBUG] Editing quiz_id: {quiz_id}, quiz.classroom_id: {quiz.classroom_id}, classroom.teacher_id: {quiz.classroom.teacher_id}, current teacher_id: {teacher_id}")
         if quiz.classroom.teacher_id != teacher_id:
             return jsonify(message="You don't have permission to edit this quiz"), 403
         data = request.get_json()
@@ -127,8 +133,8 @@ def edit_quiz(quiz_id):
         db.session.commit()
         return jsonify(message="Quiz updated successfully")
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
     
 @teacher_bp.route('/quiz/<uuid:quiz_id>', methods=['DELETE'])
 @jwt_required()
@@ -136,15 +142,15 @@ def delete_quiz(quiz_id):
     try:
         teacher_id = get_current_teacher_id()
         quiz = Quiz.query.get_or_404(quiz_id)
-        # Add authorization check here
+        print(f"[DEBUG] Deleting quiz_id: {quiz_id}, quiz.classroom_id: {quiz.classroom_id}, classroom.teacher_id: {quiz.classroom.teacher_id}, current teacher_id: {teacher_id}")
         if quiz.classroom.teacher_id != teacher_id:
             return jsonify(message="You don't have permission to delete this quiz"), 403
         db.session.delete(quiz)
         db.session.commit()
         return jsonify(message="Quiz deleted successfully")
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @teacher_bp.route('/<uuid:quiz_id>/add-question', methods=['POST'])
 @jwt_required()
@@ -162,8 +168,8 @@ def add_question(quiz_id):
         db.session.commit()
         return jsonify({"message": "Question added successfully", "question_id": str(new_question.id)}), 201
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @teacher_bp.route('/question/<uuid:question_id>', methods=['PUT', 'DELETE'])
 @jwt_required()
@@ -185,8 +191,8 @@ def manage_question(question_id):
             db.session.commit()
             return jsonify(message="Question deleted successfully")
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 # OTHER TEACHER ROUTES
 @teacher_bp.route('/student-issues')
@@ -197,8 +203,8 @@ def get_student_issues():
         issues = db.session.query(StudentIssue).join(Classroom).filter(Classroom.teacher_id == teacher_id).all()
         return jsonify([{"id": i.id, "title": i.title, "description": i.description, "status": i.status} for i in issues])
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @teacher_bp.route('/updates')
 @jwt_required()
@@ -208,8 +214,8 @@ def teacher_updates():
         notifications = Notification.query.filter_by(user_id=teacher_id).order_by(Notification.created_at.desc()).all()
         return jsonify([{"id": n.id, "title": n.title, "message": n.message} for n in notifications])
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 # Routes that are not classroom-specific
 teacher_no_classroom_bp = Blueprint('teacher_no_classroom', __name__, url_prefix='/teacher')
@@ -220,8 +226,8 @@ def my_quizzes():
     try:
         return jsonify(message="Fetching all quizzes for the teacher")
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @teacher_no_classroom_bp.route('/evaluation')
 @jwt_required()
@@ -229,8 +235,8 @@ def evaluation():
     try:
         return jsonify(message="Teacher evaluation page")
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @teacher_no_classroom_bp.route('/feedback')
 @jwt_required()
@@ -238,8 +244,8 @@ def feedback():
     try:
         return jsonify(message="Teacher feedback page")
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @teacher_no_classroom_bp.route('/submissions')
 @jwt_required()
@@ -247,8 +253,8 @@ def submissions():
     try:
         return jsonify(message="Teacher submissions page")
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @teacher_no_classroom_bp.route('/profile', methods=['GET', 'PUT'])
 @jwt_required()
@@ -271,8 +277,8 @@ def teacher_profile():
             db.session.commit()
             return jsonify(message="Profile updated successfully")
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
 
 @teacher_bp.route('/classrooms', methods=['GET'])
 @jwt_required()
@@ -289,5 +295,5 @@ def get_classrooms():
             } for c in classrooms
         ])
     except Exception as e:
-        print(f"Error fetching classrooms: {str(e)}")
-        return jsonify(message="Internal server error", error=str(e)), 500 
+        print(str(e))
+        return jsonify(message="Internal server error"), 500 

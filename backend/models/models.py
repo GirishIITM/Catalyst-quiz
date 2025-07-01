@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import Enum, ForeignKey, JSON, Text, Boolean, Float, String, Integer, DateTime
 from sqlalchemy.orm import relationship
@@ -14,8 +14,8 @@ class User(db.Model):
     password_hash = db.Column(db.String(128), nullable=False)
     role = db.Column(Enum('teacher', 'student', name='user_roles'), nullable=False)
     user_metadata = db.Column(JSON, default={})
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     # Relationships
     classrooms = relationship('Classroom', back_populates='teacher', foreign_keys='Classroom.teacher_id')
     enrollments = relationship('Enrollment', back_populates='student', foreign_keys='Enrollment.student_id')
@@ -30,8 +30,8 @@ class Classroom(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String(120), nullable=False)
     teacher_id = db.Column(UUID(as_uuid=True), db.ForeignKey('users.id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     # Relationships
     teacher = relationship('User', back_populates='classrooms', foreign_keys=[teacher_id])
     enrollments = relationship('Enrollment', back_populates='classroom', foreign_keys='Enrollment.classroom_id')
@@ -44,7 +44,7 @@ class Enrollment(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     classroom_id = db.Column(UUID(as_uuid=True), db.ForeignKey('classrooms.id'), nullable=False)
     student_id = db.Column(UUID(as_uuid=True), db.ForeignKey('users.id'), nullable=False)
-    enrolled_at = db.Column(db.DateTime, default=datetime.utcnow)
+    enrolled_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     # Relationships
     classroom = relationship('Classroom', back_populates='enrollments', foreign_keys=[classroom_id])
     student = relationship('User', back_populates='enrollments', foreign_keys=[student_id])
@@ -60,7 +60,7 @@ class Quiz(db.Model):
     difficulty = db.Column(Enum('easy', 'medium', 'hard', name='quiz_difficulty'), nullable=False)
     is_published = db.Column(Boolean, default=False)
     deadline = db.Column(db.DateTime)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     published_at = db.Column(db.DateTime)
     # Relationships
     classroom = relationship('Classroom', back_populates='quizzes', foreign_keys=[classroom_id])
@@ -77,7 +77,7 @@ class Question(db.Model):
     answer_key = db.Column(JSON)
     tags = db.Column(JSON, default=list)
     difficulty = db.Column(Enum('easy', 'medium', 'hard', name='question_difficulty'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     # Relationships
     quiz = relationship('Quiz', back_populates='questions', foreign_keys=[quiz_id])
     options = relationship('Option', back_populates='question', foreign_keys='Option.question_id')
@@ -104,7 +104,7 @@ class Notes(db.Model):
     description = db.Column(Text)
     tags = db.Column(JSON, default=list)
     file_url = db.Column(db.String(255))
-    uploaded_at = db.Column(db.DateTime, default=datetime.utcnow)
+    uploaded_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     # Relationships
     teacher = relationship('User', back_populates='notes', foreign_keys=[teacher_id])
     classroom = relationship('Classroom', foreign_keys=[classroom_id])
@@ -116,7 +116,7 @@ class Submission(db.Model):
     quiz_id = db.Column(UUID(as_uuid=True), db.ForeignKey('quizzes.id'), nullable=False)
     student_id = db.Column(UUID(as_uuid=True), db.ForeignKey('users.id'), nullable=False)
     classroom_id = db.Column(UUID(as_uuid=True), db.ForeignKey('classrooms.id'), nullable=False)
-    submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
+    submitted_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     status = db.Column(Enum('submitted', 'evaluated', name='submission_status'), nullable=False)
     score = db.Column(Float)
     # Relationships
@@ -144,7 +144,7 @@ class AIFeedback(db.Model):
     submission_id = db.Column(UUID(as_uuid=True), db.ForeignKey('submissions.id'), nullable=False)
     feedback_text = db.Column(Text)
     score_breakdown = db.Column(JSON)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     # Relationships
     submission = relationship('Submission', back_populates='ai_feedback', foreign_keys=[submission_id])
 
@@ -159,8 +159,8 @@ class StudentIssue(db.Model):
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(Text)
     status = db.Column(Enum('open', 'in_progress', 'resolved', 'closed', name='issue_status'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     # Relationships
     student = relationship('User', back_populates='student_issues', foreign_keys=[student_id])
     classroom = relationship('Classroom', back_populates='student_issues', foreign_keys=[classroom_id])
@@ -174,7 +174,7 @@ class Notification(db.Model):
     title = db.Column(db.String(255), nullable=False)
     message = db.Column(Text)
     is_read = db.Column(Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     related_type = db.Column(Enum('quiz', 'submission', 'issue', 'note', 'classroom', 'none', name='notification_related_type'), nullable=False)
     related_id = db.Column(UUID(as_uuid=True), nullable=True)
     # Relationships
