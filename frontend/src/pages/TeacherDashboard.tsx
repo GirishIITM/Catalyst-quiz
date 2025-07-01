@@ -1,7 +1,18 @@
+import { teacherApi } from "@/api";
 import Header from "@/components/header";
 import { SidebarInset } from "@/components/ui/sidebar";
+import { useEffect } from "react";
 
 export default function TeacherDashboard() {
+
+  useEffect(() => {
+    teacherApi.getClassrooms().then((classrooms) => {
+      console.log("Classrooms:", classrooms);
+    }).catch((error) => {
+      console.error("Error fetching classrooms:", error);
+    });
+  }, [])
+
   return (
     <SidebarInset>
       <Header title="Teacher Dashboard" />

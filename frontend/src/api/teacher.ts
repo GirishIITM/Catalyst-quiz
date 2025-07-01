@@ -1,25 +1,30 @@
-import api from './config';
 import type {
+  AddStudentRequest,
+  ApiResponse,
   CreateClassroomRequest,
   CreateClassroomResponse,
-  EditClassroomRequest,
-  AddStudentRequest,
-  CreateQuizRequest,
-  CreateQuizResponse,
-  EditQuizRequest,
   CreateQuestionRequest,
   CreateQuestionResponse,
+  CreateQuizRequest,
+  CreateQuizResponse,
+  EditClassroomRequest,
   EditQuestionRequest,
-  StudentIssue,
+  EditQuizRequest,
   Notification,
-  UserProfile,
+  StudentIssue,
   UpdateProfileRequest,
-  ApiResponse
+  UserProfile
 } from '../types/api.types';
+import api from './config';
 
 export const teacherApi = {
   createClassroom: async (data: CreateClassroomRequest): Promise<CreateClassroomResponse> => {
     const response = await api.post<CreateClassroomResponse>('/teacher/add-classroom', data);
+    return response.data;
+  },
+
+  getClassrooms: async (): Promise<CreateClassroomResponse[]> => {
+    const response = await api.get<CreateClassroomResponse[]>('/teacher/classrooms');
     return response.data;
   },
 

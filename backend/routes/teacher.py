@@ -26,6 +26,7 @@ def add_classroom():
         db.session.commit()
         return jsonify({"message": "Classroom created successfully", "classroom_id": new_classroom.id}), 201
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 @teacher_bp.route('/<uuid:classroom_id>', methods=['PUT'])
@@ -39,6 +40,7 @@ def edit_classroom(classroom_id):
         db.session.commit()
         return jsonify(message="Classroom updated successfully")
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 @teacher_bp.route('/<uuid:classroom_id>', methods=['DELETE'])
@@ -51,6 +53,7 @@ def delete_classroom(classroom_id):
         db.session.commit()
         return jsonify(message="Classroom deleted successfully")
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 @teacher_bp.route('/<uuid:classroom_id>/add-student', methods=['POST'])
@@ -76,6 +79,7 @@ def add_student(classroom_id):
         db.session.commit()
         return jsonify(message="Student added and notified successfully"), 201
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 # QUIZ & QUESTION MANAGEMENT
@@ -104,6 +108,7 @@ def add_quiz(classroom_id):
         db.session.commit()
         return jsonify({"message": "Quiz added and students notified", "quiz_id": str(new_quiz.id)}), 201
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 @teacher_bp.route('/quiz/<uuid:quiz_id>', methods=['PUT'])
@@ -122,6 +127,7 @@ def edit_quiz(quiz_id):
         db.session.commit()
         return jsonify(message="Quiz updated successfully")
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
     
 @teacher_bp.route('/quiz/<uuid:quiz_id>', methods=['DELETE'])
@@ -137,6 +143,7 @@ def delete_quiz(quiz_id):
         db.session.commit()
         return jsonify(message="Quiz deleted successfully")
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 @teacher_bp.route('/<uuid:quiz_id>/add-question', methods=['POST'])
@@ -155,6 +162,7 @@ def add_question(quiz_id):
         db.session.commit()
         return jsonify({"message": "Question added successfully", "question_id": str(new_question.id)}), 201
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 @teacher_bp.route('/question/<uuid:question_id>', methods=['PUT', 'DELETE'])
@@ -177,6 +185,7 @@ def manage_question(question_id):
             db.session.commit()
             return jsonify(message="Question deleted successfully")
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 # OTHER TEACHER ROUTES
@@ -188,6 +197,7 @@ def get_student_issues():
         issues = db.session.query(StudentIssue).join(Classroom).filter(Classroom.teacher_id == teacher_id).all()
         return jsonify([{"id": i.id, "title": i.title, "description": i.description, "status": i.status} for i in issues])
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 @teacher_bp.route('/updates')
@@ -198,6 +208,7 @@ def teacher_updates():
         notifications = Notification.query.filter_by(user_id=teacher_id).order_by(Notification.created_at.desc()).all()
         return jsonify([{"id": n.id, "title": n.title, "message": n.message} for n in notifications])
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 # Routes that are not classroom-specific
@@ -209,6 +220,7 @@ def my_quizzes():
     try:
         return jsonify(message="Fetching all quizzes for the teacher")
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 @teacher_no_classroom_bp.route('/evaluation')
@@ -217,6 +229,7 @@ def evaluation():
     try:
         return jsonify(message="Teacher evaluation page")
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 @teacher_no_classroom_bp.route('/feedback')
@@ -225,6 +238,7 @@ def feedback():
     try:
         return jsonify(message="Teacher feedback page")
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 @teacher_no_classroom_bp.route('/submissions')
@@ -233,6 +247,7 @@ def submissions():
     try:
         return jsonify(message="Teacher submissions page")
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 @teacher_no_classroom_bp.route('/profile', methods=['GET', 'PUT'])
@@ -256,6 +271,7 @@ def teacher_profile():
             db.session.commit()
             return jsonify(message="Profile updated successfully")
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500
 
 @teacher_bp.route('/classrooms', methods=['GET'])
@@ -263,7 +279,9 @@ def teacher_profile():
 def get_classrooms():
     try:
         teacher_id = get_current_teacher_id()
+        print(teacher_id)
         classrooms = Classroom.query.filter_by(teacher_id=teacher_id).all()
+        print(classrooms)
         return jsonify([
             {
                 'id': str(c.id),
@@ -271,4 +289,5 @@ def get_classrooms():
             } for c in classrooms
         ])
     except Exception as e:
+        print(f"Error fetching classrooms: {str(e)}")
         return jsonify(message="Internal server error", error=str(e)), 500 
