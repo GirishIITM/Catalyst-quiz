@@ -10,6 +10,7 @@ import type {
   EditClassroomRequest,
   EditQuestionRequest,
   EditQuizRequest,
+  GetClassroomResponse,
   Notification,
   StudentIssue,
   UpdateProfileRequest,
@@ -23,8 +24,8 @@ export const teacherApi = {
     return response.data;
   },
 
-  getClassrooms: async (): Promise<CreateClassroomResponse[]> => {
-    const response = await api.get<CreateClassroomResponse[]>('/teacher/classrooms');
+  getClassrooms: async (): Promise<GetClassroomResponse> => {
+    const response = await api.get<GetClassroomResponse>('/teacher/classrooms');
     return response.data;
   },
 

@@ -23,7 +23,7 @@ const data = {
       plan: "Active",
     },
     {
-      name: "Physics 201", 
+      name: "Physics 201",
       plan: "Active",
     },
     {
@@ -41,6 +41,10 @@ const data = {
         {
           title: "Dashboard",
           url: routes.teacher.dashboard.replace(":classroom", "math-101"),
+        },
+        {
+          title: "Classrooms",
+          url: routes.teacher.classrooms,
         },
         {
           title: "Notes",

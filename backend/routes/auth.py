@@ -1,3 +1,4 @@
+from datetime import timedelta
 from flask import Blueprint, request, jsonify
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token
@@ -69,7 +70,8 @@ def login():
         if user and bcrypt.check_password_hash(user.password_hash, password):
             access_token = create_access_token(
                 identity=str(user.id),
-                additional_claims={"role": user.role}
+                additional_claims={"role": user.role},
+                expires_delta=timedelta(days=7)
             )
             return jsonify(access_token=access_token, role=user.role, username=user.username)
 

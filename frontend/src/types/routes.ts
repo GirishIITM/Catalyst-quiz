@@ -8,6 +8,7 @@ export const routes = {
     createQuiz: "/:classroom/teacher/create-quiz",
     uploadNotes: "/:classroom/teacher/upload-notes",
     myQuizzes: "/:classroom/teacher/my-quizzes",
+    classrooms: "/teacher/classrooms",
     classroom: "/:classroom/teacher/classroom",
     evaluation: "/:classroom/teacher/evaluation",
     profile: "/:classroom/teacher/profile",

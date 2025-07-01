@@ -143,51 +143,6 @@ function Login() {
             </form>
           </div>
         </div>
-
-        <div className="md:hidden flex flex-col h-screen w-full pt-20">
-          <div className="flex-1 flex flex-col justify-center items-center">
-            <h2 className="text-3xl font-semibold text-card-foreground text-center mb-6">
-              Welcome Back
-            </h2>
-
-            <form onSubmit={handleLogin} className="w-full space-y-4">
-              <Input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-              />
-
-              <Input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleInputChange}
-                required
-              />
-
-              <Button
-                type="submit"
-                className="w-full bg-auth-primary hover:bg-auth-primary-hover text-black font-bold"
-              >
-                Sign In
-              </Button>
-
-              <p className="text-sm text-muted-foreground text-center mt-4">
-                Don't have an account?{" "}
-                <Link
-                  to={routes.register}
-                  className="text-primary hover:underline"
-                >
-                  Sign Up
-                </Link>
-              </p>
-            </form>
-          </div>
-        </div>
       </div>
     </>
   );

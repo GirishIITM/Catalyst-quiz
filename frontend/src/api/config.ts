@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { authStore } from '@/states/auth';
 
 const api = axios.create({
   baseURL: 'http://localhost:5000',
@@ -16,6 +17,24 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (
+      error.response?.status === 401 &&
+      error.response?.data?.msg === "Token has expired"
+    ) {
+      authStore.getState().logout();
+      
+      window.location.href = '/login';
+    }
+    
     return Promise.reject(error);
   }
 );

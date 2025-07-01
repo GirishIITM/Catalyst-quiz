@@ -48,6 +48,11 @@ export interface CreateClassroomResponse {
   classroom_id: string;
 }
 
+export type GetClassroomResponse = [{
+  name: string;
+  id: string;
+}]
+
 export interface EditClassroomRequest {
   name: string;
 }

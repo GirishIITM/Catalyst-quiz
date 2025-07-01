@@ -17,6 +17,7 @@ import StudentProfile from "@/pages/student/StudentProfile";
 import StudentSubmissions from "@/pages/student/StudentSubmissions";
 import StudentTakeQuiz from "@/pages/student/StudentTakeQuiz";
 import StudentViewNotes from "@/pages/student/StudentViewNotes";
+import TeacherClassRooms from "@/pages/teacher/ClassRooms";
 import TeacherClassroom from "@/pages/teacher/TeacherClassroom";
 import TeacherCreateQuiz from "@/pages/teacher/TeacherCreateQuiz";
 import TeacherEvaluation from "@/pages/teacher/TeacherEvaluation";
@@ -99,6 +100,10 @@ export default function AllRoutes() {
       <Route
         path={routes.teacher.myQuizzes}
         element={wrapTeacherSidebar(<TeacherMyQuizzes />)}
+      />
+      <Route
+        path={routes.teacher.classrooms}
+        element={wrapTeacherSidebar(<TeacherClassRooms />)}
       />
       <Route
         path={routes.teacher.classroom}
