@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+test.js
+package-lock.json
+package.json
+test_new.js
+debug_jwt.js

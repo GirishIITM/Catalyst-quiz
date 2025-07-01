@@ -1,15 +1,15 @@
 from flask import Blueprint, jsonify, request
-from models import *
-from flask_jwt_extended import jwt_required, get_jwt_identity
-import uuid
+from models import db, User, Quiz, Submission, Notes, Question, Option, StudentAnswer, Enrollment, Notification, StudentIssue
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 student_bp = Blueprint('student', __name__, url_prefix='/student')
 
 def get_current_student_id():
-    identity = get_jwt_identity()
-    if identity.get('role') != 'student':
+    identity = get_jwt_identity() 
+    claims = get_jwt() 
+    if claims.get('role') != 'student':
         raise Exception("Student role required")
-    return identity['id']
+    return identity
 
 @student_bp.route('/<uuid:classroom_id>/dashboard')
 @jwt_required()

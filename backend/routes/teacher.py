@@ -1,15 +1,15 @@
 from flask import Blueprint, jsonify, request
-from models import *
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from models import db, User, Classroom, Enrollment, Quiz, Question, Notification, StudentIssue
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 teacher_bp = Blueprint('teacher', __name__, url_prefix='/teacher')
 
 def get_current_teacher_id():
-    identity = get_jwt_identity()
-    if identity.get('role') != 'teacher':
-        # This will prevent students from accessing teacher routes.
+    identity = get_jwt_identity() 
+    claims = get_jwt() 
+    if claims.get('role') != 'teacher':
         raise Exception("Teacher role required")
-    return identity['id']
+    return identity
 
 # CLASSROOM MANAGEMENT
 @teacher_bp.route('/add-classroom', methods=['POST'])
@@ -72,7 +72,7 @@ def add_student(classroom_id):
             return jsonify(message="Student already enrolled in this classroom"), 409
             
         enrollment = Enrollment(classroom_id=classroom_id, student_id=student.id)
-        notification = Notification(user_id=student.id, type="classroom_update", title="Added to new class", message=f"You have been added to a new classroom.")
+        notification = Notification(user_id=student.id, type="classroom_update", title="Added to new class", message="You have been added to a new classroom.")
         
         db.session.add(enrollment)
         db.session.add(notification)
