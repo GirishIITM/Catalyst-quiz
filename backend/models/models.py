@@ -33,7 +33,8 @@ class Classroom(db.Model):
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     # Relationships
-    teacher = relationship('User', back_populates='classrooms', foreign_keys=[teacher_id])
+    teacher = relationship('User', back_populates='classrooms',primaryjoin='Classroom.teacher_id == User.id', foreign_keys='Classroom.teacher_id')
+    students = relationship('User', secondary='enrollments', back_populates='classrooms')
     enrollments = relationship('Enrollment', back_populates='classroom', foreign_keys='Enrollment.classroom_id')
     quizzes = relationship('Quiz', back_populates='classroom', foreign_keys='Quiz.classroom_id')
     student_issues = relationship('StudentIssue', back_populates='classroom', foreign_keys='StudentIssue.classroom_id')
