@@ -338,7 +338,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"question_text\": \"What is 2+2?\",\n  \"question_type\": \"multiple_choice\",\n  \"answer_key\": \"4\",\n  \"difficulty\": \"easy\"\n}"
+              "raw": "{\n  \"question_text\": \"What is 2+2?\",\n  \"question_type\": \"  \",\n  \"answer_key\": \"4\",\n  \"difficulty\": \"easy\"\n}"
             },
             "url": { "raw": "http://localhost:5000/teacher/{{quiz_id}}/add-question", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["teacher", "{{quiz_id}}", "add-question"] }
           }

@@ -27,6 +27,7 @@ def add_classroom():
         new_classroom = Classroom(name=data['name'], teacher_id=teacher_id)
         db.session.add(new_classroom)
         db.session.commit()
+        db.session.refresh(new_classroom)
         print(f"[DEBUG] Created classroom with id: {new_classroom.id} and teacher_id: {new_classroom.teacher_id}")
         return jsonify({"message": "Classroom created successfully", "classroom_id": new_classroom.id}), 201
     except Exception as e:
@@ -124,7 +125,7 @@ def edit_quiz(quiz_id):
         teacher_id = get_current_teacher_id()
         quiz = Quiz.query.get_or_404(quiz_id)
         print(f"[DEBUG] Editing quiz_id: {quiz_id}, quiz.classroom_id: {quiz.classroom_id}, classroom.teacher_id: {quiz.classroom.teacher_id}, current teacher_id: {teacher_id}")
-        if quiz.classroom.teacher_id != teacher_id:
+        if str(quiz.classroom.teacher_id) != str(teacher_id):
             return jsonify(message="You don't have permission to edit this quiz"), 403
         data = request.get_json()
         quiz.title = data.get('title', quiz.title)
@@ -143,7 +144,7 @@ def delete_quiz(quiz_id):
         teacher_id = get_current_teacher_id()
         quiz = Quiz.query.get_or_404(quiz_id)
         print(f"[DEBUG] Deleting quiz_id: {quiz_id}, quiz.classroom_id: {quiz.classroom_id}, classroom.teacher_id: {quiz.classroom.teacher_id}, current teacher_id: {teacher_id}")
-        if quiz.classroom.teacher_id != teacher_id:
+        if str(quiz.classroom.teacher_id) != str(teacher_id):
             return jsonify(message="You don't have permission to delete this quiz"), 403
         db.session.delete(quiz)
         db.session.commit()
@@ -178,7 +179,7 @@ def manage_question(question_id):
         teacher_id = get_current_teacher_id()
         question = Question.query.get_or_404(question_id)
         # Add authorization check
-        if question.quiz.classroom.teacher_id != teacher_id:
+        if str(question.quiz.classroom.teacher_id) != str(teacher_id):
             return jsonify(message="You don't have permission to modify this question"), 403
         if request.method == 'PUT':
             data = request.get_json()
