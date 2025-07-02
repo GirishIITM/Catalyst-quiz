@@ -53,6 +53,15 @@ export type GetClassroomResponse = [{
   id: string;
 }]
 
+export type GetClassroomsAndStudentsResponse = Array<{
+  id: string;
+  name: string;
+  students: Array<{
+    id: string;
+    name: string;
+  }>;
+}>;
+
 export interface EditClassroomRequest {
   name: string;
 }

@@ -11,6 +11,7 @@ import type {
   EditQuestionRequest,
   EditQuizRequest,
   GetClassroomResponse,
+  GetClassroomsAndStudentsResponse,
   Notification,
   StudentIssue,
   UpdateProfileRequest,
@@ -26,6 +27,11 @@ export const teacherApi = {
 
   getClassrooms: async (): Promise<GetClassroomResponse> => {
     const response = await api.get<GetClassroomResponse>('/teacher/classrooms');
+    return response.data;
+  },
+
+  getClassroomsAndStudents: async (): Promise<GetClassroomsAndStudentsResponse> => {
+    const response = await api.get<GetClassroomsAndStudentsResponse>('/teacher/classrooms-and-students');
     return response.data;
   },
 

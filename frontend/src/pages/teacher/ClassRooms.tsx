@@ -35,10 +35,6 @@ function TeacherClassRooms() {
     const { classrooms, fetchClassrooms } = classroomStore();
     const form = useForm<CreateClassroomForm>();
 
-    useEffect(() => {
-        fetchClassrooms();
-    }, []);
-
     const onSubmit = async (data: CreateClassroomForm) => {
         try {
             loadingStore.getState().setLoading(true);

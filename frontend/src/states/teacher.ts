@@ -9,7 +9,7 @@ export const classroomStore = create<classroomState>((set) => ({
   fetchClassrooms: async (): Promise<void> => {
     try {
         loadingStore.getState().setLoading(true);
-        const response = await teacherApi.getClassrooms();
+        const response = await teacherApi.getClassroomsAndStudents(); 
         set({ classrooms: response });
         loadingStore.getState().setLoading(false);
     } catch (error) {
