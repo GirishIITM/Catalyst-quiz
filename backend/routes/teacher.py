@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from models import db, User, Classroom, Enrollment, Quiz, Question, Notification, StudentIssue
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
+from sqlalchemy.orm import joinedload
 
 teacher_bp = Blueprint('teacher', __name__, url_prefix='/teacher')
 
@@ -286,9 +287,7 @@ def teacher_profile():
 def get_classrooms():
     try:
         teacher_id = get_current_teacher_id()
-        print(teacher_id)
         classrooms = Classroom.query.filter_by(teacher_id=teacher_id).all()
-        print(classrooms)
         return jsonify([
             {
                 'id': str(c.id),
@@ -298,3 +297,22 @@ def get_classrooms():
     except Exception as e:
         print(str(e))
         return jsonify(message="Internal server error"), 500 
+
+@teacher_bp.route('/classrooms-and-students', methods=['GET'])
+@jwt_required()
+def get_classrooms_and_students():
+    try:
+        teacher_id = get_current_teacher_id()
+        classrooms = Classroom.query.filter_by(teacher_id=teacher_id).options(
+            joinedload(Classroom.students)
+        ).all()
+        return jsonify([
+            {
+                'id': str(c.id),
+                'name': c.name,
+                'students': [{'id': str(s.id), 'name': s.username} for s in c.students]
+            } for c in classrooms
+        ])
+    except Exception as e:
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
