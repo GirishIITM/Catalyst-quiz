@@ -41,13 +41,13 @@ function TeacherClassRooms() {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [selectedClassroomId, setSelectedClassroomId] = useState<string>("");
     const [classroomToDelete, setClassroomToDelete] = useState<string>("");
-    const { classrooms, fetchClassrooms, deleteClassroom, inviteStudent } = classroomStore();
+    const { classroomsStudents, fetchClassroomsStudents, deleteClassroom, inviteStudent } = classroomStore();
     const form = useForm<CreateClassroomForm>();
     const inviteForm = useForm<InviteStudentForm>();
 
     useEffect(() => {
-        fetchClassrooms();
-    }, [fetchClassrooms]);
+        fetchClassroomsStudents();
+    }, [fetchClassroomsStudents]);
 
     const onSubmit = async (data: CreateClassroomForm) => {
         try {
@@ -56,7 +56,7 @@ function TeacherClassRooms() {
             toast.success("Classroom created successfully");
             setOpen(false);
             form.reset();
-            await fetchClassrooms();
+            await fetchClassroomsStudents();
         } catch (error) {
             toast.error("Failed to create classroom");
         } finally {
@@ -216,7 +216,7 @@ function TeacherClassRooms() {
                     </DialogContent>
                 </Dialog>
 
-                {classrooms.length === 0 ? (
+                {classroomsStudents.length === 0 ? (
                     <div className="text-center py-12">
                         <h2 className="text-xl font-semibold mb-2">No Classrooms Yet</h2>
                         <p className="text-muted-foreground mb-4">Create your first classroom to get started</p>
@@ -231,7 +231,7 @@ function TeacherClassRooms() {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {classrooms.map((classroom) => (
+                        {classroomsStudents.map((classroom) => (
                             <Card key={classroom.id} className="hover:shadow-lg transition-shadow">
                                 <CardHeader className="pb-3">
                                     <div className="flex justify-between items-start">
