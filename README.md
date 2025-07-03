@@ -46,22 +46,56 @@ Whether you're uploading handwritten answers, evaluating student performance, or
 
 ---
 
-## ⚙️ Installation (Windows)
+## ⚙️ Installation
 
-> Prerequisites: Python 3.10+, Node.js 18+, Git
+> Prerequisites: Python 3.10+, Node.js 18+, Git, UV (recommended) or pip
 
 1. **Clone the repo**
    ```bash
    git clone https://github.com/GirishIITM/quizcatalyst-ai.git
    cd quizcatalyst-ai
+   ```
 
 2. **Backend setup**
+
+   ### Method 1: Using UV (Recommended)
+   
+   **Linux/Mac:**
+   ```bash
+   cd backend
+   # Install UV if not already installed
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   # Run the application (automatically installs dependencies)
+   uv run main.py
+   ```
+   
+   **Windows:**
+   ```bash
+   cd backend
+   # Install UV if not already installed
+   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+   # Run the application (automatically installs dependencies)
+   uv run main.py
+   ```
+
+   ### Method 2: Traditional pip method
+   
+   **Linux/Mac:**
+   ```bash
+   cd backend
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
+   python main.py
+   ```
+   
+   **Windows:**
    ```bash
    cd backend
    python -m venv venv
    venv\Scripts\activate
    pip install -r requirements.txt
-   python app.py
+   python main.py
    ```
 
 3. **Frontend setup**

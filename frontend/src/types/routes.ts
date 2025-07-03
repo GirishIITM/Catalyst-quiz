@@ -4,7 +4,7 @@ export const routes = {
   signup: "/signup",
   register: "/register",
   teacher: {
-    dashboard: "/:classroom/teacher/dashboard",
+    dashboard: "/teacher/dashboard",
     createQuiz: "/:classroom/teacher/create-quiz",
     uploadNotes: "/:classroom/teacher/upload-notes",
     myQuizzes: "/:classroom/teacher/my-quizzes",

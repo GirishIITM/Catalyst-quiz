@@ -1,5 +1,6 @@
 import NotFound from "@/components/not-found";
 import PrivateRoute from "@/components/private-route";
+import PublicRoute from "@/components/public-route";
 import StudentBottomBar from "@/components/student-bottom-bar";
 import { StudentSidebar } from "@/components/student-sidebar";
 import TeacherBottomBar from "@/components/teacher-bottom-bar";
@@ -126,8 +127,8 @@ export default function AllRoutes() {
         element={wrapTeacherSidebar(<TeacherProfile />)}
       />
 
-      <Route path={routes.login} element={<Login />} />
-      <Route path={routes.register} element={<Register />} />
+      <Route path={routes.login} element={<PublicRoute><Login /></PublicRoute>} />
+      <Route path={routes.register} element={<PublicRoute><Register /></PublicRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

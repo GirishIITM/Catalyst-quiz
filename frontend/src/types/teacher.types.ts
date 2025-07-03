@@ -10,4 +10,6 @@ type classRoom = {
 export type classroomState = {
     classrooms: Array<classRoom>;
     fetchClassrooms: () => Promise<void>;
+    deleteClassroom: (classroomId: string) => Promise<void>;
+    inviteStudent: (classroomId: string, email: string) => Promise<void>;
 }

@@ -1,4 +1,4 @@
-export type user = null | { id: string; name: string, role: "teacher" | "student" };
+export type user = null | { id: string; name: string; email?: string; role: "teacher" | "student" };
 
 export interface AuthState {
   isAuthenticated: boolean;
@@ -11,6 +11,7 @@ export interface AuthState {
   logout: () => void;
   setToken: (token: string | null) => void;
   setClassroomId: (classroomId: string) => void;
+  checkAuthStatus: () => boolean;
 }
 
 export type initStoreProps = {

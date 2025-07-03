@@ -2,10 +2,11 @@ import { authStore } from "@/states/auth";
 import { Navigate } from "react-router-dom";
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = authStore();
+  const { checkAuthStatus } = authStore();
+  
   return (
     <>
-      {isAuthenticated ? (
+      {checkAuthStatus() ? (
         children
       ) : (
         <Navigate

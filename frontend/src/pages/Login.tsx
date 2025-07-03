@@ -57,6 +57,7 @@ function Login() {
         const user = {
           id: response.username,
           name: response.username,
+          email: isEmail ? formData.email : undefined,
           role: response.role,
         };
 
