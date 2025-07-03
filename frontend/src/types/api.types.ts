@@ -197,6 +197,20 @@ export interface QuizStartResponse {
   first_question_id?: string;
 }
 
+export interface MyQuizzesResponse {
+  data: Array<{
+    id: string;
+    title: string;
+    description?: string;
+    difficulty: string;
+    deadline?: string;
+    is_published: boolean;
+    created_at: string;
+    question_count: number;
+    classroom_name: string;
+  }>;
+}
+
 export interface ApiResponse<T = any> {
   message?: string;
   data?: T;

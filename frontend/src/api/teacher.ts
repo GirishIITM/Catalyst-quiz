@@ -15,7 +15,8 @@ import type {
   Notification,
   StudentIssue,
   UpdateProfileRequest,
-  UserProfile
+  UserProfile,
+  MyQuizzesResponse
 } from '../types/api.types';
 import api from './config';
 
@@ -90,8 +91,8 @@ export const teacherApi = {
     return response.data;
   },
 
-  getMyQuizzes: async (): Promise<ApiResponse> => {
-    const response = await api.get<ApiResponse>('/teacher/my-quizzes');
+  getMyQuizzes: async (): Promise<MyQuizzesResponse> => {
+    const response = await api.get<MyQuizzesResponse>('/teacher/my-quizzes');
     return response.data;
   },
 

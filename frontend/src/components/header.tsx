@@ -1,10 +1,10 @@
 import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
@@ -18,10 +18,10 @@ function Header({ title }: { title?: string }) {
   return (
     <header className="fixed bg-secondary w-full flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
       <div className="flex items-center justify-between calc-width-header px-4 box-border">
-        <div className="flex items-center gap-2">
-          <SidebarTrigger className="-ml-1" />
-          <Breadcrumb>
-            <BreadcrumbList>
+        <div className="flex items-center gap-2 desktop:gap-4">
+          <SidebarTrigger className="ml-1" />
+          <Breadcrumb >
+            <BreadcrumbList className="white-space-nowrap flex-nowrap">
               <BreadcrumbItem>
                 <BreadcrumbLink href="#">{classroomId}</BreadcrumbLink>
               </BreadcrumbItem>

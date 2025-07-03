@@ -219,14 +219,36 @@ def teacher_updates():
         print(str(e))
         return jsonify(message="Internal server error"), 500
 
-# Routes that are not classroom-specific
 teacher_no_classroom_bp = Blueprint('teacher_no_classroom', __name__, url_prefix='/teacher')
 
 @teacher_no_classroom_bp.route('/my-quizzes')
 @jwt_required()
 def my_quizzes():
     try:
-        return jsonify(message="Fetching all quizzes for the teacher")
+        teacher_id = get_current_teacher_id()
+        
+        quizzes = db.session.query(Quiz).join(Classroom).filter(
+            Classroom.teacher_id == teacher_id
+        ).options(
+            joinedload(Quiz.classroom),
+            joinedload(Quiz.questions)
+        ).all()
+        
+        quiz_data = []
+        for quiz in quizzes:
+            quiz_data.append({
+                'id': str(quiz.id),
+                'title': quiz.title,
+                'description': quiz.description,
+                'difficulty': quiz.difficulty,
+                'deadline': quiz.deadline.isoformat() if quiz.deadline else None,
+                'is_published': quiz.is_published,
+                'created_at': quiz.created_at.isoformat(),
+                'question_count': len(quiz.questions),
+                'classroom_name': quiz.classroom.name
+            })
+        
+        return jsonify({'data': quiz_data})
     except Exception as e:
         print(str(e))
         return jsonify(message="Internal server error"), 500

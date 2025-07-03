@@ -1,3 +1,27 @@
 .calc-width-header{
     width: calc(100% - 183px);
 }
+
+.mobile-only{
+    display: none;
+}
+
+.desktop-only{
+    display: block;
+}
+
+.desktop-only-flex{
+    display: flex;
+}
+
+@media (max-width: 768px) {
+    .mobile-only{
+        display: block;
+    }
+    .desktop-only{
+        display: none;
+    }
+    .desktop-only-flex{
+        display: none;
+    }
+}
