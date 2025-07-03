@@ -39,7 +39,10 @@ Whether you're uploading handwritten answers, evaluating student performance, or
 
 ## 🗃️ Database Schema
 
-![Database Diagram](/frontend/src/assets/db-diagram.png)
+![Database Diagram](/frontend/src/assets/db.png)
+
+##  Flowchart
+![Flowchart](/frontend/src/assets/catalystflow.png)
 
 ---
 
