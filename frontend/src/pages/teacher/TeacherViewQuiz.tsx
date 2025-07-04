@@ -48,7 +48,7 @@ interface QuizFormData {
   questions: QuizQuestion[];
 }
 
-export default function TeacherCreateQuiz() {
+export default function TeacherViewQuiz() {
   const navigate = useNavigate();
   const params = useParams();
   const classroomId = params.classroom || "";
@@ -150,7 +150,7 @@ export default function TeacherCreateQuiz() {
       <Header title="Create Quiz" />
       <div className="py-6 px-8 mt-14 max-w-10xl">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold desktop-only">Create New Quiz</h1>
+          <h1 className="text-2xl font-bold">Edit Quiz</h1>
           <div className="flex gap-2">
             <Button variant="outline" onClick={handlePreview}>
               <Eye className="w-4 h-4 mr-2" />
@@ -452,3 +452,4 @@ export default function TeacherCreateQuiz() {
     </SidebarInset>
   );
 }
+

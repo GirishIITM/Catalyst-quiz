@@ -12,7 +12,9 @@ import { Badge } from "@/components/ui/badge";
 import Header from "@/components/header";
 import { quizStore } from "@/states/quiz";
 import { SidebarInset } from "@/components/ui/sidebar";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { routes } from "@/types/routes";
+import { generateRoute } from "@/utils/routeUtils";
 
 export default function TeacherMyQuizzes() {
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -136,9 +138,11 @@ export default function TeacherMyQuizzes() {
                       </div>
                     </div>
                     <div className="flex gap-1">
-                      <Button variant="outline" size="sm">
-                        <Eye className="w-4 h-4" />
-                      </Button>
+                      <Link to={generateRoute(routes.teacher.viewQuiz, { classroom: classroomId, quizId: quiz.id })}>
+                        <Button variant="outline" size="sm">
+                          <Eye className="w-4 h-4" />
+                        </Button>
+                      </Link>
                       <Button
                         variant="outline"
                         size="sm"

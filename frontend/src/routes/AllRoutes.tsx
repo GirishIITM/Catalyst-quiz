@@ -27,6 +27,7 @@ import TeacherMyQuizzes from "@/pages/teacher/TeacherMyQuizzes";
 import TeacherProfile from "@/pages/teacher/TeacherProfile";
 import TeacherSubmissions from "@/pages/teacher/TeacherSubmissions";
 import TeacherUploadNotes from "@/pages/teacher/TeacherUploadNotes";
+import TeacherViewQuiz from "@/pages/teacher/TeacherViewQuiz";
 import { routes } from "@/types/routes";
 import { Route, Routes } from "react-router-dom";
 
@@ -49,7 +50,7 @@ function wrapStudentSidebar(element: React.ReactNode) {
         <StudentSidebar />
         <PrivateRoute>{element}</PrivateRoute>
       </SidebarProvider>
-    <StudentBottomBar /> 
+      <StudentBottomBar />
     </div>
   );
 }
@@ -93,6 +94,14 @@ export default function AllRoutes() {
       <Route
         path={routes.teacher.createQuiz}
         element={wrapTeacherSidebar(<TeacherCreateQuiz />)}
+      />
+      <Route
+        path={routes.teacher.viewQuiz}
+        element={wrapTeacherSidebar(<TeacherViewQuiz />)}
+      />
+      <Route
+        path={routes.teacher.viewNote}
+        element={wrapTeacherSidebar(<TeacherViewQuiz />)}
       />
       <Route
         path={routes.teacher.uploadNotes}

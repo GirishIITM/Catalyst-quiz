@@ -6,6 +6,8 @@ export const routes = {
   teacher: {
     dashboard: "/teacher/dashboard",
     createQuiz: "/:classroom/teacher/create-quiz",
+    viewQuiz: "/:classroom/teacher/view-quiz/:quizId",
+    viewNote: "/:classroom/teacher/view-notes/:noteId",
     uploadNotes: "/:classroom/teacher/upload-notes",
     myQuizzes: "/:classroom/teacher/my-quizzes",
     classrooms: "/teacher/classrooms",
@@ -24,7 +26,7 @@ export const routes = {
     profile: "/:classroom/student/profile",
   },
   quizes: "/:classroom/quizes",
-  quiz: "/:classroom/:quiz", 
+  quiz: "/:classroom/:quiz",
 
 };
 
