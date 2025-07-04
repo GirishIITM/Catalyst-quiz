@@ -33,18 +33,18 @@ export default function StudentViewNotes() {
   const [filter, setFilter] = useState("All")
   const [bookmarked, setBookmarked] = useState<number[]>([])
 
- const filteredNotes = mockNotes.filter((note) => {
-  const matchSearch = note.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredNotes = mockNotes.filter((note) => {
+    const matchSearch = note.title.toLowerCase().includes(searchTerm.toLowerCase())
 
-  const matchFilter =
-    filter === "All"
-      ? true
-      : filter === "Bookmarked"
-        ? bookmarked.includes(note.id)
-        : note.subject === filter
+    const matchFilter =
+      filter === "All"
+        ? true
+        : filter === "Bookmarked"
+          ? bookmarked.includes(note.id)
+          : note.subject === filter
 
-  return matchSearch && matchFilter
-})
+    return matchSearch && matchFilter
+  })
 
 
   const toggleBookmark = (id: number) => {
@@ -95,9 +95,8 @@ export default function StudentViewNotes() {
                     onClick={() => toggleBookmark(note.id)}
                   >
                     <Bookmark
-                      className={`h-4 w-4 ${
-                        bookmarked.includes(note.id) ? "fill-primary text-primary" : ""
-                      }`}
+                      className={`h-4 w-4 ${bookmarked.includes(note.id) ? "fill-primary text-primary" : ""
+                        }`}
                     />
                   </Button>
                   <Button

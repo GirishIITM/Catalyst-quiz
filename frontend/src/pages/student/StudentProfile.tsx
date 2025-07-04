@@ -84,7 +84,7 @@ export default function StudentProfile() {
               <p className="border rounded-md p-3 bg-muted">
                 <strong>Student ID:</strong> {user.id}
               </p>
-            
+
               <p className="border rounded-md p-3 bg-muted">
                 <strong>Classroom:</strong> {classroomId}
               </p>

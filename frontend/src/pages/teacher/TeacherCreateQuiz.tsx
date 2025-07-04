@@ -52,7 +52,7 @@ export default function TeacherCreateQuiz() {
   const navigate = useNavigate();
   const params = useParams();
   const classroomId = params.classroom || "";
-  
+
   const form = useForm<QuizFormData>({
     defaultValues: {
       title: "",
@@ -93,7 +93,7 @@ export default function TeacherCreateQuiz() {
   const addOption = (questionIndex: number) => {
     const currentOptions = form.getValues(`questions.${questionIndex}.options`);
     const nextLabel = String.fromCharCode(65 + currentOptions.length); // A, B, C, D...
-    
+
     form.setValue(`questions.${questionIndex}.options`, [
       ...currentOptions,
       { label: nextLabel, text: "", is_correct: false },
@@ -150,7 +150,7 @@ export default function TeacherCreateQuiz() {
       <Header title="Create Quiz" />
       <div className="py-6 px-8 mt-14 max-w-10xl">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Create New Quiz</h1>
+          <h1 className="text-2xl font-bold desktop-only">Create New Quiz</h1>
           <div className="flex gap-2">
             <Button variant="outline" onClick={handlePreview}>
               <Eye className="w-4 h-4 mr-2" />
@@ -181,10 +181,10 @@ export default function TeacherCreateQuiz() {
                           <FormItem>
                             <FormLabel>Quiz Title</FormLabel>
                             <FormControl>
-                              <Input 
-                                placeholder="Enter quiz title" 
+                              <Input
+                                placeholder="Enter quiz title"
                                 className="text-lg font-medium"
-                                {...field} 
+                                {...field}
                               />
                             </FormControl>
                             <FormMessage />
@@ -199,10 +199,10 @@ export default function TeacherCreateQuiz() {
                           <FormItem>
                             <FormLabel>Description</FormLabel>
                             <FormControl>
-                              <Textarea 
+                              <Textarea
                                 placeholder="Enter quiz description (optional)"
                                 rows={3}
-                                {...field} 
+                                {...field}
                               />
                             </FormControl>
                             <FormMessage />
@@ -311,10 +311,10 @@ export default function TeacherCreateQuiz() {
                             <FormItem>
                               <FormLabel>Question Text</FormLabel>
                               <FormControl>
-                                <Textarea 
+                                <Textarea
                                   placeholder="Enter your question here..."
                                   rows={2}
-                                  {...field} 
+                                  {...field}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -385,7 +385,7 @@ export default function TeacherCreateQuiz() {
                                 Add Option
                               </Button>
                             </div>
-                            
+
                             {form.watch(`questions.${questionIndex}.options`)?.map((option, optionIndex) => (
                               <div key={optionIndex} className="flex items-center gap-2">
                                 <span className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-sm font-medium">
@@ -398,9 +398,9 @@ export default function TeacherCreateQuiz() {
                                   render={({ field }) => (
                                     <FormItem className="flex-1">
                                       <FormControl>
-                                        <Input 
+                                        <Input
                                           placeholder={`Option ${option.label}`}
-                                          {...field} 
+                                          {...field}
                                         />
                                       </FormControl>
                                       <FormMessage />
@@ -430,9 +430,9 @@ export default function TeacherCreateQuiz() {
                               <FormItem>
                                 <FormLabel>Expected Answer (Optional)</FormLabel>
                                 <FormControl>
-                                  <Input 
+                                  <Input
                                     placeholder="Enter expected answer for reference..."
-                                    {...field} 
+                                    {...field}
                                   />
                                 </FormControl>
                                 <FormMessage />

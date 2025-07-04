@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Trash2, Eye, Calendar, Users, FileText, Clock } from "lucide-react";
@@ -78,7 +78,6 @@ export default function TeacherMyQuizzes() {
           </Button>
         </div>
 
-        {/* Delete Confirmation Dialog */}
         <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
           <DialogContent>
             <DialogHeader>
@@ -89,15 +88,15 @@ export default function TeacherMyQuizzes() {
                 Are you sure you want to delete this quiz? This action cannot be undone and will permanently remove all associated data.
               </p>
               <div className="flex justify-end gap-2">
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
                   onClick={() => setDeleteOpen(false)}
                 >
                   Cancel
                 </Button>
-                <Button 
-                  type="button" 
+                <Button
+                  type="button"
                   variant="destructive"
                   onClick={() => handleDeleteQuiz(quizToDelete)}
                 >
@@ -140,8 +139,8 @@ export default function TeacherMyQuizzes() {
                       <Button variant="outline" size="sm">
                         <Eye className="w-4 h-4" />
                       </Button>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         size="sm"
                         onClick={() => openDeleteDialog(quiz.id)}
                       >
@@ -157,7 +156,7 @@ export default function TeacherMyQuizzes() {
                         {quiz.description}
                       </p>
                     )}
-                    
+
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <FileText className="w-4 h-4" />
@@ -183,8 +182,8 @@ export default function TeacherMyQuizzes() {
 
                     {!quiz.is_published && (
                       <div className="pt-2">
-                        <Button 
-                          size="sm" 
+                        <Button
+                          size="sm"
                           className="w-full"
                           onClick={() => handlePublishQuiz(quiz.id)}
                         >
