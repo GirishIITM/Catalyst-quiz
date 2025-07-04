@@ -16,12 +16,12 @@ function Header({ title }: { title?: string }) {
   const { classroomId } = authStore((state) => state);
 
   return (
-    <header className="fixed bg-secondary w-full flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 z-1">
+    <header className="fixed bg-secondary z-1 w-full flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
       <div className="flex items-center justify-between calc-width-header px-4 box-border">
         <div className="flex items-center gap-2 desktop:gap-4">
           <SidebarTrigger className="ml-1" />
           <Breadcrumb >
-            <BreadcrumbList className="desktop-only">
+            <BreadcrumbList className="white-space-nowrap flex-nowrap">
               <BreadcrumbItem>
                 <BreadcrumbLink href="#">{classroomId}</BreadcrumbLink>
               </BreadcrumbItem>

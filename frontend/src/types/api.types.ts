@@ -62,6 +62,10 @@ export type GetClassroomsAndStudentsResponse = Array<{
   }>;
 }>;
 
+export type GetStudentsBySearch = Array<{
+
+}>
+
 export interface EditClassroomRequest {
   name: string;
 }

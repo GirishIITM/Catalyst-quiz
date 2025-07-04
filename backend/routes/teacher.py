@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from sqlalchemy import or_
 from models import db, User, Classroom, Enrollment, Quiz, Question, Notification, StudentIssue
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from sqlalchemy.orm import joinedload
@@ -59,6 +60,21 @@ def delete_classroom(classroom_id):
         db.session.commit()
         return jsonify(message="Classroom deleted successfully")
     except Exception as e:
+        print(str(e))
+        return jsonify(message="Internal server error"), 500
+
+@teacher_bp.route('/<uuid:classroom_id>/students-search', methods=['GET'])
+@jwt_required()
+def get_students():
+    try:
+        query = request.args.get('query', '')
+        query = query.strip()
+        students = User.query.filter(or_(
+            User.username.ilike(f'%{query}%'),
+                                         User.email.ilike(f'%{query}%')),
+                                     User.role == 'student').all()
+        return jsonify([for {} in students], 200)
+    Exception as e:
         print(str(e))
         return jsonify(message="Internal server error"), 500
 
