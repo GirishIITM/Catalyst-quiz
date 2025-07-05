@@ -96,6 +96,14 @@ export const teacherApi = {
     return response.data;
   },
 
+  searchStudents: async (query: string, classroomId?: string) => {
+    const url = classroomId
+      ? `/teacher/${classroomId}/students-search?query=${encodeURIComponent(query)}`
+      : `/teacher/students-search?query=${encodeURIComponent(query)}`;
+    const response = await api.get(url);
+    return response.data;
+  },
+
   getEvaluation: async (): Promise<ApiResponse> => {
     const response = await api.get<ApiResponse>('/teacher/evaluation');
     return response.data;

@@ -26,14 +26,8 @@ import { teacherApi } from "@/api";
 import { loadingStore } from "@/states/loading";
 import toast from "react-hot-toast";
 import { SidebarInset } from "@/components/ui/sidebar";
+import type { CreateClassroomForm, InviteStudentForm, StudentSuggestion } from "@/types/teacher.types";
 
-interface CreateClassroomForm {
-  name: string;
-}
-
-interface InviteStudentForm {
-  email: string;
-}
 
 function TeacherClassRooms() {
   const [open, setOpen] = useState(false);
@@ -41,13 +35,17 @@ function TeacherClassRooms() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [selectedClassroomId, setSelectedClassroomId] = useState<string>("");
   const [classroomToDelete, setClassroomToDelete] = useState<string>("");
+  const [studentQuery, setStudentQuery] = useState("");
+  const [suggestions, setSuggestions] = useState<StudentSuggestion[]>([]);
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+  const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(null);
   const { classroomsStudents, fetchClassroomsStudents, deleteClassroom, inviteStudent } = classroomStore();
   const form = useForm<CreateClassroomForm>();
   const inviteForm = useForm<InviteStudentForm>();
 
   useEffect(() => {
     fetchClassroomsStudents();
-  }, [fetchClassroomsStudents]);
+  }, []);
 
   const onSubmit = async (data: CreateClassroomForm) => {
     try {
@@ -64,6 +62,24 @@ function TeacherClassRooms() {
     }
   };
 
+  useEffect(() => {
+    if (inviteOpen && studentQuery.length > 1) {
+      setLoadingSuggestions(true);
+      teacherApi.searchStudents(studentQuery)
+        .then((res) => {
+          setSuggestions(Array.isArray(res) ? res : []);
+        })
+        .catch(() => setSuggestions([]))
+        .finally(() => setLoadingSuggestions(false));
+    } else {
+      setSuggestions([]);
+    }
+  }, [studentQuery, selectedClassroomId, inviteOpen]);
+
+  useEffect(() => {
+    if (!inviteOpen) setSelectedSuggestion(null);
+  }, [inviteOpen]);
+
   const onInviteSubmit = async (data: InviteStudentForm) => {
     if (!selectedClassroomId) return;
     loadingStore.getState().setLoading(true);
@@ -72,6 +88,8 @@ function TeacherClassRooms() {
       setInviteOpen(false);
       inviteForm.reset();
       setSelectedClassroomId("");
+      setStudentQuery("");
+      setSuggestions([]);
     } catch (error) {
       toast.error("Failed to invite student");
     }
@@ -155,27 +173,57 @@ function TeacherClassRooms() {
             </DialogHeader>
             <Form {...inviteForm}>
               <form onSubmit={inviteForm.handleSubmit(onInviteSubmit)} className="space-y-4">
-                <FormField
-                  control={inviteForm.control}
-                  name="email"
-                  rules={{
-                    required: "Email is required",
-                    pattern: {
-                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      message: "Please enter a valid email address"
-                    }
-                  }}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Student Email</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter student email" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="flex justify-end gap-2">
+                <FormItem>
+                  <FormLabel>Search Student by Name or Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Type to search..."
+                      value={studentQuery}
+                      onChange={e => {
+                        setStudentQuery(e.target.value);
+                        inviteForm.setValue('email', e.target.value);
+                      }}
+                      autoFocus
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+                {studentQuery.length > 1 && (
+                  <div className="max-h-48 overflow-auto border rounded bg-muted p-2 text-sm">
+                    {loadingSuggestions ? (
+                      <div>Loading...</div>
+                    ) : suggestions.length > 0 ? (
+                      suggestions.map(s => (
+                        <div
+                          key={s.id}
+                          className={`p-2 flex items-center gap-2 cursor-pointer rounded transition \
+                            ${selectedSuggestion === s.email ? "border border-blue-400" : "hover:bg-accent"}`}
+                          onClick={() => {
+                            inviteForm.setValue('email', s.email);
+                            setStudentQuery(s.email);
+                            setSelectedSuggestion(s.email);
+                          }}
+                        >
+                          <Avatar className="w-7 h-7">
+                            <AvatarFallback>
+                              {getStudentInitials(s.username)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="font-medium">{s.username}</div>
+                            <div className="text-xs text-muted-foreground">{s.email}</div>
+                          </div>
+                          {selectedSuggestion === s.email && (
+                            <span className="ml-auto text-blue-600 font-bold text-xs">Selected</span>
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <div>No students found.</div>
+                    )}
+                  </div>
+                )}
+                <div className="flex justify-end gap-2 pt-2">
                   <Button type="button" variant="outline" onClick={() => setInviteOpen(false)}>
                     Cancel
                   </Button>
@@ -186,7 +234,6 @@ function TeacherClassRooms() {
           </DialogContent>
         </Dialog>
 
-        {/* Delete Confirmation Dialog */}
         <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
           <DialogContent>
             <DialogHeader>
